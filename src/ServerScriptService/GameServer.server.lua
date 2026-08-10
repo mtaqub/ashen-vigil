@@ -273,9 +273,9 @@ shrineLight.Shadows = false
 shrineLight.Parent = shrineSigil
 
 Lighting.ClockTime = 0
-Lighting.Brightness = 3.4
-Lighting.Ambient = Color3.fromRGB(96, 86, 118)
-Lighting.OutdoorAmbient = Color3.fromRGB(74, 68, 96)
+Lighting.Brightness = 2.9
+Lighting.Ambient = Color3.fromRGB(80, 72, 102)
+Lighting.OutdoorAmbient = Color3.fromRGB(59, 54, 78)
 Lighting.FogColor = Color3.fromRGB(18, 14, 28)
 Lighting.FogStart = 150
 Lighting.FogEnd = 380
