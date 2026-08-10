@@ -34,6 +34,16 @@ local LEGACY_WARDEN_PARTS = {
 	OathEmber = true,
 }
 
+-- Independent of scene lighting entirely: a per-species outline so an enemy
+-- reads as a distinct shape even when the arena itself is dim, without
+-- needing every dark basalt/slate surface to be individually lit.
+local OUTLINE_COLORS = {
+	Bat = Color3.fromRGB(137, 77, 255),
+	Ghoul = Color3.fromRGB(99, 197, 124),
+	Brute = Color3.fromRGB(201, 48, 70),
+	Warden = Color3.fromRGB(235, 190, 93),
+}
+
 local function scaled(root, value)
 	return Vector3.new(root.Size.X * value.X, root.Size.Y * value.Y, root.Size.Z * value.Z)
 end
