@@ -204,8 +204,8 @@ for index = 1, 16 do
 	brazierFlame.CanCollide = false
 	local brazierLight = Instance.new("PointLight")
 	brazierLight.Color = brazierColor
-	brazierLight.Brightness = 1.7
-	brazierLight.Range = 22
+	brazierLight.Brightness = 2.3
+	brazierLight.Range = 24
 	brazierLight.Shadows = false
 	brazierLight.Parent = brazierFlame
 end
