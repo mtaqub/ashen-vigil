@@ -63,6 +63,10 @@ Night Bat, Ash Ghoul, Oathless Brute, and Cinder Warden now have original Roblox
 
 This folder is also a standard Rojo project. If you already use Rojo, serve `default.project.json` and sync it into a place. The one-file Studio installer is included so Rojo is not required.
 
+## Version control
+
+This project is a git repository. Every change is committed automatically, so the full edit history is available to any tool, editor, or AI assistant you continue the project with — not just a single frozen snapshot.
+
 ## Originality note
 
 This prototype draws from the general survivor-like and ruined dark-fantasy genres, but its title, lore, characters, relics, interface, arena, and code are original. Do not import names, characters, logos, maps, music, UI artwork, or other assets from existing commercial games. Use original or properly licensed sounds and artwork before publishing.
