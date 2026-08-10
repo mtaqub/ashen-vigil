@@ -516,6 +516,17 @@ function MobModelFactory.Attach(root, enemyId)
 
 	visual.PrimaryPart = primaryPart
 	visual:SetAttribute("VisiblePartCount", context.partCount)
+
+	local outline = Instance.new("Highlight")
+	outline.Name = "EnemyOutline"
+	local outlineColor = OUTLINE_COLORS[enemyId] or Color3.fromRGB(230, 230, 230)
+	outline.FillColor = outlineColor
+	outline.FillTransparency = 0.75
+	outline.OutlineColor = outlineColor
+	outline.OutlineTransparency = 0
+	outline.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+	outline.Parent = visual
+
 	visual.Parent = root
 
 	root.Transparency = 1
