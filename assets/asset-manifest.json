@@ -1,0 +1,285 @@
+{
+  "project": "Ashen Vigil",
+  "purpose": "Roblox-ready upload copies; editable masters remain in sibling asset folders.",
+  "marketing": {
+    "experienceIcon": "roblox-upload/marketing/experience-icon-512.png",
+    "experienceThumbnail": "roblox-upload/marketing/experience-thumbnail-1920x1080.png"
+  },
+  "configMappings": {
+    "Images.CrackedBasaltFloor": "roblox-upload/world/cracked-basalt-color-1024.png",
+    "Images.AshenDart": "roblox-upload/ui/relics/ashen-dart-512.png",
+    "Images.GraveHalo": "roblox-upload/ui/relics/grave-halo-512.png",
+    "Images.BlackflameTestament": "roblox-upload/ui/relics/blackflame-testament-512.png",
+    "Images.CinderOath": "roblox-upload/ui/relics/cinder-oath-512.png",
+    "Images.BellOfTheNameless": "roblox-upload/ui/relics/bell-of-the-nameless-512.png",
+    "Images.ThornedGreatblade": "roblox-upload/ui/relics/thorned-greatblade-512.png",
+    "Images.WidowsLantern": "roblox-upload/ui/relics/widows-lantern-512.png",
+    "Images.ReliquaryShield": "roblox-upload/ui/relics/reliquary-shield-512.png",
+    "Images.BloodShard": "roblox-upload/ui/relics/blood-shard-512.png",
+    "Images.BossBarFrame": "roblox-upload/ui/ornaments/boss-bar-frame-1024x176.png",
+    "Images.LevelUpSigil": "roblox-upload/ui/ornaments/level-up-sigil-512.png",
+    "Images.ReturnToVigilFrame": "roblox-upload/ui/ornaments/return-to-vigil-frame-1024x192.png",
+    "Images.NightBat": "roblox-upload/world/enemies/night-bat-512.png",
+    "Images.AshGhoul": "roblox-upload/world/enemies/ash-ghoul-512.png",
+    "Images.OathlessBrute": "roblox-upload/world/enemies/oathless-brute-512.png",
+    "Images.CinderWarden": "roblox-upload/world/enemies/cinder-warden-512.png",
+    "Audio.AmbientLoop": "roblox-upload/audio/ashen-vigil-ambient-loop.wav",
+    "Audio.AshenDart": "roblox-upload/audio/ashen-dart-cast.wav",
+    "Audio.BloodShardPickup": "roblox-upload/audio/blood-shard-pickup.wav",
+    "Audio.GraveHalo": "roblox-upload/audio/grave-halo.wav",
+    "Audio.BlackflameTestament": "roblox-upload/audio/blackflame-testament.wav",
+    "Audio.WardenTelegraph": "roblox-upload/audio/warden-telegraph.wav",
+    "Audio.WardenImpact": "roblox-upload/audio/warden-impact.wav",
+    "Audio.RelicInherited": "roblox-upload/audio/relic-inherited.wav"
+  },
+  "files": [
+    {
+      "file": "roblox-upload/audio/ashen-dart-cast.wav",
+      "bytes": 81188,
+      "sha256": "c2c643ee808cbdc4508a0b1e70741311d9ce917fb97e4b5f7e6df9fa588d65ea"
+    },
+    {
+      "file": "roblox-upload/audio/ashen-vigil-ambient-loop.wav",
+      "bytes": 1764044,
+      "sha256": "65085eebeca29e1f2300a2465eafb4d901690e6237140ac0a006e541c59bc97b"
+    },
+    {
+      "file": "roblox-upload/audio/blackflame-testament.wav",
+      "bytes": 130580,
+      "sha256": "25dbfbd860b9bf0f7c35646ad4cfce7e289c4f7f782d75aace292432c8c67d7b"
+    },
+    {
+      "file": "roblox-upload/audio/blood-shard-pickup.wav",
+      "bytes": 54728,
+      "sha256": "c4e4629118845e6eb2df779803f056023c1a067ff4cad67f7aa4306ac7596788"
+    },
+    {
+      "file": "roblox-upload/audio/grave-halo.wav",
+      "bytes": 112940,
+      "sha256": "e03a1a76602579a73e30a4a470622e4e564e04c9d765b819459072dfe5f8a368"
+    },
+    {
+      "file": "roblox-upload/audio/relic-inherited.wav",
+      "bytes": 164096,
+      "sha256": "b03237439822e04e48069f3ba3565b6d8be7c43ef651828f8963029b967a68ed"
+    },
+    {
+      "file": "roblox-upload/audio/warden-impact.wav",
+      "bytes": 136754,
+      "sha256": "5ab864886f63b9110b8632e748d65c9d1818a32e490df64ea8af76ccc317ec70"
+    },
+    {
+      "file": "roblox-upload/audio/warden-telegraph.wav",
+      "bytes": 107648,
+      "sha256": "c59d802cddda5756f8dc1a7667a29bf5b33031abe4b544e747638fbb8cef518e"
+    },
+    {
+      "file": "roblox-upload/marketing/experience-icon-512.png",
+      "bytes": 421564,
+      "sha256": "6d374ef5f0dff13833584a961e9ed80b6e0555b3bae5916d2299f9ef8cfc00f3",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA"
+    },
+    {
+      "file": "roblox-upload/marketing/experience-thumbnail-1920x1080.png",
+      "bytes": 2744971,
+      "sha256": "c2d9464e4ac519bf8f0a6b38be1b5fc8abf35c953351a0ae2fc3e13630a0730b",
+      "width": 1920,
+      "height": 1080,
+      "mode": "RGBA"
+    },
+    {
+      "file": "roblox-upload/ui/ornaments/boss-bar-frame-1024x176.png",
+      "bytes": 177510,
+      "sha256": "a0374f646f80ebb6ed1401040db0f077f31d0c9e039e6b52e031721f088effda",
+      "width": 1024,
+      "height": 176,
+      "mode": "RGBA"
+    },
+    {
+      "file": "roblox-upload/ui/ornaments/divider-1024x176.png",
+      "bytes": 116896,
+      "sha256": "cc3fcb367676cc5e2e6948d6ec30bfe2055149afc09fc038269bf993548bd757",
+      "width": 1024,
+      "height": 176,
+      "mode": "RGBA"
+    },
+    {
+      "file": "roblox-upload/ui/ornaments/level-up-sigil-512.png",
+      "bytes": 268235,
+      "sha256": "0d92b0efc0cb736a3e1c7738e11e5c668371eafeb985aff31f42b433f9e3fb17",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA"
+    },
+    {
+      "file": "roblox-upload/ui/ornaments/panel-corner-left-512.png",
+      "bytes": 179430,
+      "sha256": "5d924a0b49031e7b43fe9df22d46cf747f93021725671ddaed01219624e77c97",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA"
+    },
+    {
+      "file": "roblox-upload/ui/ornaments/panel-corner-right-512.png",
+      "bytes": 180770,
+      "sha256": "0463ec494dc6572c555f606bcc65ea3cff403708b10aab76de141926bef65ffc",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA"
+    },
+    {
+      "file": "roblox-upload/ui/ornaments/return-to-vigil-frame-1024x192.png",
+      "bytes": 123297,
+      "sha256": "b9299adde1c10709dbd0d39b9d1790fd4af1eb632c6b9ddb1c07f2a406676fa9",
+      "width": 1024,
+      "height": 192,
+      "mode": "RGBA"
+    },
+    {
+      "file": "roblox-upload/ui/relics/ashen-dart-512.png",
+      "bytes": 319998,
+      "sha256": "4b89bec9f8a6067052c4f4149f45d4bf04536c003fd7867777afe16adab7eb53",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA"
+    },
+    {
+      "file": "roblox-upload/ui/relics/bell-of-the-nameless-512.png",
+      "bytes": 382931,
+      "sha256": "e4f62557af5885183375bf5fb1526c7938a1521e9aff7aee1ced2dd692e836d0",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA"
+    },
+    {
+      "file": "roblox-upload/ui/relics/blackflame-testament-512.png",
+      "bytes": 390422,
+      "sha256": "39deebe521b4f68331373ccd799e0aab6832e20d6e3dbffdfc6442c9caeee18f",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA"
+    },
+    {
+      "file": "roblox-upload/ui/relics/blood-shard-512.png",
+      "bytes": 336616,
+      "sha256": "2ff50707d6818fcf5bf9c3696e29ab40026f8158ab2c743b9c54ad7066bbbb55",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA"
+    },
+    {
+      "file": "roblox-upload/ui/relics/cinder-oath-512.png",
+      "bytes": 352571,
+      "sha256": "437a9d0c811a750c37460d473ebb6dc89efa68e3958e5d5641bc1f1495cf0f13",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA"
+    },
+    {
+      "file": "roblox-upload/ui/relics/grave-halo-512.png",
+      "bytes": 402103,
+      "sha256": "045e5c5821608b4a384e234b1f5bae2c546e0a78fbacd42cf0dca99669cdbcbd",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA"
+    },
+    {
+      "file": "roblox-upload/ui/relics/reliquary-shield-512.png",
+      "bytes": 425930,
+      "sha256": "ab295e1ea38509325078535137e66683c0e37fd3a4b2e759794acaf953ce8487",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA"
+    },
+    {
+      "file": "roblox-upload/ui/relics/thorned-greatblade-512.png",
+      "bytes": 371618,
+      "sha256": "e9098e45c70234ef40d93c83107790b2d52059f3eab9446d47c0a0c368a46b2f",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA"
+    },
+    {
+      "file": "roblox-upload/ui/relics/widows-lantern-512.png",
+      "bytes": 324895,
+      "sha256": "a4dde4b19841994dab3a1f94765cf610c255b9c644266b65811d5f65dd97b7fc",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA"
+    },
+    {
+      "file": "roblox-upload/ui/ui-ornaments-1024.png",
+      "bytes": 835923,
+      "sha256": "9ee3dca5f6770c011a29ab39e8150e9541736f8a0f2e1565c4f6b90eb45138a2",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGBA"
+    },
+    {
+      "file": "roblox-upload/world/cracked-basalt-color-1024.png",
+      "bytes": 1929947,
+      "sha256": "31eb44dce96ec7f9209e319ba8474402dfc519eaf3e01e62c42a048cab0b5c35",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGB"
+    },
+    {
+      "file": "roblox-upload/world/cracked-basalt-metalness-1024.png",
+      "bytes": 1097,
+      "sha256": "1eb50a3ee3fcac0adc60c0e90baa6d051c642f3a930330ac9aec9dd92996f3f7",
+      "width": 1024,
+      "height": 1024,
+      "mode": "L"
+    },
+    {
+      "file": "roblox-upload/world/cracked-basalt-normal-1024.png",
+      "bytes": 2121064,
+      "sha256": "58f4a59f3eaef0acfda575c4eae0d891674043c187c48b9466d3c80c7f6c9ce7",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGB"
+    },
+    {
+      "file": "roblox-upload/world/cracked-basalt-roughness-1024.png",
+      "bytes": 514647,
+      "sha256": "fe24f6011d4d2cb0e0e31c3b865f0ebbdbeb80843d315256c76ae5887fc6590c",
+      "width": 1024,
+      "height": 1024,
+      "mode": "L"
+    },
+    {
+      "file": "roblox-upload/world/enemies/ash-ghoul-512.png",
+      "bytes": 354514,
+      "sha256": "68fcf025c6f20211018c58663519abaf02670bc71b94313a98a6e65b6d31e271",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA"
+    },
+    {
+      "file": "roblox-upload/world/enemies/cinder-warden-512.png",
+      "bytes": 439357,
+      "sha256": "932bb5469571e2f33066eabfb7263b7356352d91008ef3f7b9f772b31ef91912",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA"
+    },
+    {
+      "file": "roblox-upload/world/enemies/night-bat-512.png",
+      "bytes": 333799,
+      "sha256": "63ad9877c6678b259682ddc0c4523d4f377e5bd2a407b42462ccc6f60a9c0636",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA"
+    },
+    {
+      "file": "roblox-upload/world/enemies/oathless-brute-512.png",
+      "bytes": 400084,
+      "sha256": "82280e2b6c1a740633974d5612db0ea50f609fa4060702286b8e22c4407bc80c",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA"
+    }
+  ]
+}
