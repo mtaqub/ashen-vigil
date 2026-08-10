@@ -4,8 +4,8 @@ local VISUAL_NAME = "EnemyVisual"
 local VISUAL_VERSION = 1
 
 local COLORS = {
-	void = Color3.fromRGB(18, 14, 25),
-	slate = Color3.fromRGB(52, 42, 68),
+	void = Color3.fromRGB(38, 32, 50),
+	slate = Color3.fromRGB(70, 58, 90),
 	ash = Color3.fromRGB(82, 78, 86),
 	bone = Color3.fromRGB(245, 231, 209),
 	cinder = Color3.fromRGB(221, 44, 83),
