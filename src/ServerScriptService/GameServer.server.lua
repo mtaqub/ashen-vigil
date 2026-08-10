@@ -891,8 +891,8 @@ local function addPlayer(player)
 		local vigilLight = Instance.new("PointLight")
 		vigilLight.Name = "VigilEmber"
 		vigilLight.Color = Color3.fromRGB(220, 100, 48)
-		vigilLight.Brightness = 2.4
-		vigilLight.Range = 36
+		vigilLight.Brightness = 3.2
+		vigilLight.Range = 42
 		vigilLight.Parent = root
 
 		local outline = Instance.new("Highlight")
