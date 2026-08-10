@@ -419,8 +419,8 @@ for _, wallInfo in ipairs(walls) do
 		torchFlame.CanCollide = false
 		local torchLight = Instance.new("PointLight")
 		torchLight.Color = wallTorchColor
-		torchLight.Brightness = 1.8
-		torchLight.Range = 30
+		torchLight.Brightness = 2.3
+		torchLight.Range = 32
 		torchLight.Shadows = false
 		torchLight.Parent = torchFlame
 	end
@@ -471,8 +471,8 @@ for index = 1, 16 do
 	brazierFlame.CanCollide = false
 	local brazierLight = Instance.new("PointLight")
 	brazierLight.Color = brazierColor
-	brazierLight.Brightness = 1.7
-	brazierLight.Range = 22
+	brazierLight.Brightness = 2.3
+	brazierLight.Range = 24
 	brazierLight.Shadows = false
 	brazierLight.Parent = brazierFlame
 end
@@ -540,17 +540,17 @@ shrineLight.Shadows = false
 shrineLight.Parent = shrineSigil
 
 Lighting.ClockTime = 0
-Lighting.Brightness = 2.5
-Lighting.Ambient = Color3.fromRGB(64, 57, 86)
-Lighting.OutdoorAmbient = Color3.fromRGB(44, 40, 60)
+Lighting.Brightness = 3.4
+Lighting.Ambient = Color3.fromRGB(96, 86, 118)
+Lighting.OutdoorAmbient = Color3.fromRGB(74, 68, 96)
 Lighting.FogColor = Color3.fromRGB(18, 14, 28)
 Lighting.FogStart = 150
 Lighting.FogEnd = 380
 
 local atmosphere = Lighting:FindFirstChildOfClass("Atmosphere") or Instance.new("Atmosphere")
 atmosphere.Color = Color3.fromRGB(105, 86, 138)
-atmosphere.Decay = Color3.fromRGB(48, 17, 32)
-atmosphere.Density = 0.22
+atmosphere.Decay = Color3.fromRGB(62, 32, 48)
+atmosphere.Density = 0.18
 atmosphere.Glare = 0
 atmosphere.Haze = 1.25
 atmosphere.Parent = Lighting
@@ -1158,8 +1158,8 @@ local function addPlayer(player)
 		local vigilLight = Instance.new("PointLight")
 		vigilLight.Name = "VigilEmber"
 		vigilLight.Color = Color3.fromRGB(220, 100, 48)
-		vigilLight.Brightness = 2.4
-		vigilLight.Range = 36
+		vigilLight.Brightness = 3.2
+		vigilLight.Range = 42
 		vigilLight.Parent = root
 
 		local outline = Instance.new("Highlight")
