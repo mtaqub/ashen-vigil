@@ -21,11 +21,11 @@ local factoryModule = replace("ModuleScript", "MobModelFactory", ServerScriptSer
 local MobModelFactory = {}
 
 local VISUAL_NAME = "EnemyVisual"
-local VISUAL_VERSION = 1
+local VISUAL_VERSION = 2
 
 local COLORS = {
-	void = Color3.fromRGB(18, 14, 25),
-	slate = Color3.fromRGB(52, 42, 68),
+	void = Color3.fromRGB(38, 32, 50),
+	slate = Color3.fromRGB(70, 58, 90),
 	ash = Color3.fromRGB(82, 78, 86),
 	bone = Color3.fromRGB(245, 231, 209),
 	cinder = Color3.fromRGB(221, 44, 83),
@@ -52,6 +52,16 @@ local LEGACY_WARDEN_PARTS = {
 	Crown = true,
 	CrownSpike = true,
 	OathEmber = true,
+}
+
+-- Independent of scene lighting entirely: a per-species outline so an enemy
+-- reads as a distinct shape even when the arena itself is dim, without
+-- needing every dark basalt/slate surface to be individually lit.
+local OUTLINE_COLORS = {
+	Bat = Color3.fromRGB(137, 77, 255),
+	Ghoul = Color3.fromRGB(99, 197, 124),
+	Brute = Color3.fromRGB(201, 48, 70),
+	Warden = Color3.fromRGB(235, 190, 93),
 }
 
 local function scaled(root, value)
@@ -526,6 +536,17 @@ function MobModelFactory.Attach(root, enemyId)
 
 	visual.PrimaryPart = primaryPart
 	visual:SetAttribute("VisiblePartCount", context.partCount)
+
+	local outline = Instance.new("Highlight")
+	outline.Name = "EnemyOutline"
+	local outlineColor = OUTLINE_COLORS[enemyId] or Color3.fromRGB(230, 230, 230)
+	outline.FillColor = outlineColor
+	outline.FillTransparency = 0.75
+	outline.OutlineColor = outlineColor
+	outline.OutlineTransparency = 0
+	outline.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+	outline.Parent = visual
+
 	visual.Parent = root
 
 	root.Transparency = 1
