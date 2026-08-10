@@ -152,8 +152,8 @@ for _, wallInfo in ipairs(walls) do
 		torchFlame.CanCollide = false
 		local torchLight = Instance.new("PointLight")
 		torchLight.Color = wallTorchColor
-		torchLight.Brightness = 1.8
-		torchLight.Range = 30
+		torchLight.Brightness = 2.3
+		torchLight.Range = 32
 		torchLight.Shadows = false
 		torchLight.Parent = torchFlame
 	end
