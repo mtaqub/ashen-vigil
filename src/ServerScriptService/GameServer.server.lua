@@ -282,8 +282,8 @@ Lighting.FogEnd = 380
 
 local atmosphere = Lighting:FindFirstChildOfClass("Atmosphere") or Instance.new("Atmosphere")
 atmosphere.Color = Color3.fromRGB(105, 86, 138)
-atmosphere.Decay = Color3.fromRGB(48, 17, 32)
-atmosphere.Density = 0.22
+atmosphere.Decay = Color3.fromRGB(62, 32, 48)
+atmosphere.Density = 0.18
 atmosphere.Glare = 0
 atmosphere.Haze = 1.25
 atmosphere.Parent = Lighting
