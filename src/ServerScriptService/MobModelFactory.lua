@@ -1,7 +1,7 @@
 local MobModelFactory = {}
 
 local VISUAL_NAME = "EnemyVisual"
-local VISUAL_VERSION = 1
+local VISUAL_VERSION = 2
 
 local COLORS = {
 	void = Color3.fromRGB(38, 32, 50),
