@@ -544,13 +544,13 @@ Lighting.Brightness = 2.5
 Lighting.Ambient = Color3.fromRGB(64, 57, 86)
 Lighting.OutdoorAmbient = Color3.fromRGB(44, 40, 60)
 Lighting.FogColor = Color3.fromRGB(18, 14, 28)
-Lighting.FogStart = 90
-Lighting.FogEnd = 250
+Lighting.FogStart = 150
+Lighting.FogEnd = 380
 
 local atmosphere = Lighting:FindFirstChildOfClass("Atmosphere") or Instance.new("Atmosphere")
 atmosphere.Color = Color3.fromRGB(105, 86, 138)
 atmosphere.Decay = Color3.fromRGB(48, 17, 32)
-atmosphere.Density = 0.28
+atmosphere.Density = 0.22
 atmosphere.Glare = 0
 atmosphere.Haze = 1.25
 atmosphere.Parent = Lighting
