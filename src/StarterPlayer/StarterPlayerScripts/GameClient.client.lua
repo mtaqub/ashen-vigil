@@ -629,7 +629,7 @@ choicesBottomPadding.Parent = choicesFrame
 -- standing at the booth.
 local rollPanel = Instance.new("Frame")
 rollPanel.Name = "RollPanel"
-rollPanel.Size = UDim2.fromOffset(420, 400)
+rollPanel.Size = UDim2.fromOffset(420, 450)
 rollPanel.Position = UDim2.fromScale(0.5, 0.5)
 rollPanel.AnchorPoint = Vector2.new(0.5, 0.5)
 rollPanel.BackgroundColor3 = COLORS.panel
