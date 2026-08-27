@@ -669,31 +669,56 @@ rollCloseButton.ZIndex = 17
 rollCloseButton.Parent = rollPanel
 corner(rollCloseButton, 8)
 
+-- Live preview models built with Players:CreateHumanoidModelFromDescription
+-- -- a real (posed, R15) avatar rendered from the same HumanoidDescription
+-- applySkinVisuals builds server-side, not a custom Part model. Equipped
+-- gets a full-body shot; reserved gets a tight head-only crop, matching
+-- "a little small preview icon of the head".
+local equippedViewport = Instance.new("ViewportFrame")
+equippedViewport.Name = "EquippedPreview"
+equippedViewport.Size = UDim2.fromOffset(70, 70)
+equippedViewport.Position = UDim2.fromOffset(20, 54)
+equippedViewport.BackgroundColor3 = COLORS.ink
+equippedViewport.BackgroundTransparency = 0.3
+equippedViewport.ZIndex = 16
+equippedViewport.Parent = rollPanel
+corner(equippedViewport, 10)
+
 local equippedLabel = textLabel(
 	rollPanel, "Equipped", "Equipped: --",
-	UDim2.new(1, -40, 0, 22), UDim2.fromOffset(20, 56), Vector2.zero,
+	UDim2.fromOffset(300, 22), UDim2.fromOffset(100, 56), Vector2.zero,
 	Enum.Font.GothamBold, COLORS.cream, 15
 )
 equippedLabel.TextXAlignment = Enum.TextXAlignment.Left
 equippedLabel.ZIndex = 16
 local equippedDesc = textLabel(
 	rollPanel, "EquippedDesc", "",
-	UDim2.new(1, -40, 0, 18), UDim2.fromOffset(20, 78), Vector2.zero,
+	UDim2.fromOffset(300, 40), UDim2.fromOffset(100, 80), Vector2.zero,
 	Enum.Font.GothamMedium, COLORS.muted, 12
 )
 equippedDesc.TextXAlignment = Enum.TextXAlignment.Left
 equippedDesc.ZIndex = 16
 
+local reservedIcon = Instance.new("ViewportFrame")
+reservedIcon.Name = "ReservedHeadIcon"
+reservedIcon.Size = UDim2.fromOffset(40, 40)
+reservedIcon.Position = UDim2.fromOffset(20, 134)
+reservedIcon.BackgroundColor3 = COLORS.ink
+reservedIcon.BackgroundTransparency = 0.3
+reservedIcon.ZIndex = 16
+reservedIcon.Parent = rollPanel
+corner(reservedIcon, 8)
+
 local reservedLabel = textLabel(
 	rollPanel, "Reserved", "Reserved: empty",
-	UDim2.new(1, -40, 0, 22), UDim2.fromOffset(20, 108), Vector2.zero,
+	UDim2.fromOffset(328, 22), UDim2.fromOffset(72, 136), Vector2.zero,
 	Enum.Font.GothamBold, COLORS.cream, 15
 )
 reservedLabel.TextXAlignment = Enum.TextXAlignment.Left
 reservedLabel.ZIndex = 16
 local reservedDesc = textLabel(
 	rollPanel, "ReservedDesc", "",
-	UDim2.new(1, -40, 0, 18), UDim2.fromOffset(20, 130), Vector2.zero,
+	UDim2.fromOffset(328, 34), UDim2.fromOffset(72, 158), Vector2.zero,
 	Enum.Font.GothamMedium, COLORS.muted, 12
 )
 reservedDesc.TextXAlignment = Enum.TextXAlignment.Left
