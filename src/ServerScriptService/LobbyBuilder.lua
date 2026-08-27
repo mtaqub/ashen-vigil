@@ -313,6 +313,13 @@ function LobbyBuilder.Build()
 	vigilGate.RequiresLineOfSight = false
 	vigilGate.Parent = gateTrigger
 
+	-- Surrounding forest ring just past the town square, and a distant
+	-- castle silhouette toward the Vigil gate -- so the far end of town
+	-- fades into wilderness instead of bare baseplate, and reads as "that's
+	-- where the vigil waits" rather than a random background prop.
+	WorldScenery.BuildForestRing(LOBBY_CENTER, LOBBY_SIZE * 0.5 + 10, 80, 150, lobby)
+	WorldScenery.BuildCastleSilhouette(LOBBY_CENTER + Vector3.new(0, 0, -260), lobby)
+
 	return {
 		lobby = lobby,
 		spawnCFrame = spawnLocation.CFrame,
