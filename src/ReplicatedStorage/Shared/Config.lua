@@ -112,42 +112,73 @@ Config.Upgrades = {
 	RapidFire = {
 		Title = "Fervent Rite",
 		Description = "+20% attack speed. The oath quickens.",
+		Effect = { AttackSpeedMultiplier = 1.2 },
 	},
 	Power = {
 		Title = "Tarnished Edge",
 		Description = "+8 damage per ashen dart.",
+		Effect = { DamageBonus = 8 },
 	},
 	Multishot = {
 		Title = "Forked Hex",
 		Description = "+1 projectile, up to five.",
+		Effect = { MaxProjectiles = 5 },
 	},
 	Range = {
 		Title = "Far-Reaching Oath",
 		Description = "+12 attack range.",
+		Effect = { RangeBonus = 12 },
 	},
 	Magnet = {
 		Title = "Gravecall",
 		Description = "+6 blood-shard pickup radius.",
+		Effect = { PickupRadiusBonus = 6 },
 	},
 	Speed = {
 		Title = "Exile's Step",
 		Description = "+2 movement speed.",
+		Effect = { WalkSpeedBonus = 2, MaxWalkSpeed = 28 },
 	},
 	Vitality = {
 		Title = "Vessel of Ash",
 		Description = "+25 maximum health and restore 25.",
+		Effect = { MaxHealthBonus = 25 },
 	},
 	GraveHalo = {
 		Title = "Grave Halo",
 		Description = "Periodically unleash a close-range ring of ruin.",
+		Effect = {
+			MaxRank = 5,
+			InitialClock = 2.5,
+			BaseRadius = 17,
+			RadiusPerRank = 3,
+			BaseDamage = 18,
+			DamagePerRank = 12,
+			BasePeriod = 5.1,
+			PeriodPerRank = 0.35,
+			MinPeriod = 2.4,
+		},
 	},
 	Blackflame = {
 		Title = "Blackflame Testament",
 		Description = "Periodically immolate a distant enemy group.",
+		Effect = {
+			MaxRank = 5,
+			InitialClock = 4,
+			BaseRadius = 9,
+			RadiusPerRank = 2,
+			BaseDamage = 24,
+			DamagePerRank = 15,
+			BasePeriod = 7,
+			PeriodPerRank = 0.45,
+			MinPeriod = 3.4,
+			TargetSearchRange = 85,
+		},
 	},
 	CinderOath = {
 		Title = "Cinder Oath",
 		Description = "+18% damage, but sacrifice 8 maximum health.",
+		Effect = { DamageMultiplier = 1.18, MaxHealthPenalty = 8, MinMaxHealth = 35 },
 	},
 }
 
