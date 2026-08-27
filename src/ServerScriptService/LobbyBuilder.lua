@@ -282,7 +282,7 @@ function LobbyBuilder.Build()
 			LOBBY_CENTER + info.offset,
 			info.angle,
 			10 + (index % 3) * 2,
-			14,
+			12 + (index % 4) * 2,
 			facadeColors[(index - 1) % #facadeColors + 1],
 			lobby
 		)
