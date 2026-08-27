@@ -208,7 +208,7 @@ function LobbyBuilder.Build()
 	local spawnLocation = Instance.new("SpawnLocation")
 	spawnLocation.Name = "LobbySpawn"
 	spawnLocation.Size = Vector3.new(10, 0.5, 10)
-	spawnLocation.CFrame = CFrame.new(LOBBY_CENTER + Vector3.new(0, 0.25, 20))
+	spawnLocation.CFrame = CFrame.new(LOBBY_CENTER + Vector3.new(0, 0.25, 38))
 	spawnLocation.Color = Color3.fromRGB(126, 32, 55)
 	spawnLocation.Material = Enum.Material.Neon
 	spawnLocation.Transparency = 0.35
