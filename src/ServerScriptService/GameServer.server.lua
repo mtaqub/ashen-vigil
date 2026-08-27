@@ -815,34 +815,35 @@ end
 
 local function applyUpgrade(player, state, upgradeId)
 	local _, humanoid, root = getLivingCharacter(player)
+	local effect = Config.Upgrades[upgradeId].Effect
 	if upgradeId == "RapidFire" then
-		state.attackSpeed *= 1.2
+		state.attackSpeed *= effect.AttackSpeedMultiplier
 	elseif upgradeId == "Power" then
-		state.damage += 8
+		state.damage += effect.DamageBonus
 	elseif upgradeId == "Multishot" then
-		state.projectiles = math.min(state.projectiles + 1, 5)
+		state.projectiles = math.min(state.projectiles + 1, effect.MaxProjectiles)
 	elseif upgradeId == "Range" then
-		state.range += 12
+		state.range += effect.RangeBonus
 	elseif upgradeId == "Magnet" then
-		state.pickupRadius += 6
+		state.pickupRadius += effect.PickupRadiusBonus
 	elseif upgradeId == "Speed" then
-		state.walkSpeed = math.min(state.walkSpeed + 2, 28)
+		state.walkSpeed = math.min(state.walkSpeed + effect.WalkSpeedBonus, effect.MaxWalkSpeed)
 		if humanoid then
 			humanoid.WalkSpeed = state.walkSpeed
 		end
 	elseif upgradeId == "Vitality" and humanoid then
-		humanoid.MaxHealth += 25
-		humanoid.Health = math.min(humanoid.Health + 25, humanoid.MaxHealth)
+		humanoid.MaxHealth += effect.MaxHealthBonus
+		humanoid.Health = math.min(humanoid.Health + effect.MaxHealthBonus, humanoid.MaxHealth)
 	elseif upgradeId == "GraveHalo" then
-		state.graveHaloRank = math.min(state.graveHaloRank + 1, 5)
-		state.graveHaloClock = math.max(state.graveHaloClock, 2.5)
+		state.graveHaloRank = math.min(state.graveHaloRank + 1, effect.MaxRank)
+		state.graveHaloClock = math.max(state.graveHaloClock, effect.InitialClock)
 	elseif upgradeId == "Blackflame" then
-		state.blackflameRank = math.min(state.blackflameRank + 1, 5)
-		state.blackflameClock = math.max(state.blackflameClock, 4)
+		state.blackflameRank = math.min(state.blackflameRank + 1, effect.MaxRank)
+		state.blackflameClock = math.max(state.blackflameClock, effect.InitialClock)
 	elseif upgradeId == "CinderOath" then
-		state.damageMultiplier *= 1.18
+		state.damageMultiplier *= effect.DamageMultiplier
 		if humanoid then
-			humanoid.MaxHealth = math.max(35, humanoid.MaxHealth - 8)
+			humanoid.MaxHealth = math.max(effect.MinMaxHealth, humanoid.MaxHealth - effect.MaxHealthPenalty)
 			humanoid.Health = math.min(humanoid.Health, humanoid.MaxHealth)
 		end
 	end
