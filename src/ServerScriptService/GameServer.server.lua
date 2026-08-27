@@ -1050,14 +1050,14 @@ local function updateEnemies(dt)
 
 		if enemyData.id == "Warden" then
 			enemyData.specialClock += dt
-			if enemyData.specialClock >= 5.5 then
+			if enemyData.specialClock >= Config.Boss.PulseInterval then
 				enemyData.specialClock = 0
 				beginWardenPulse(enemyData)
 			end
 		end
 
-		local contactDistance = math.max(3.3, part.Size.X * 0.5 + 2)
-		if distance <= contactDistance and elapsedTime - enemyData.lastHit >= 0.8 then
+		local contactDistance = math.max(Config.Combat.EnemyContactMinDistance, part.Size.X * 0.5 + Config.Combat.EnemyContactDistancePadding)
+		if distance <= contactDistance and elapsedTime - enemyData.lastHit >= Config.Combat.EnemyContactCooldown then
 			enemyData.lastHit = elapsedTime
 			local _, humanoid = getLivingCharacter(targetPlayer)
 			local targetState = playerStates[targetPlayer]
