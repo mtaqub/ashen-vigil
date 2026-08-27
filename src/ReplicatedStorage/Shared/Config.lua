@@ -12,6 +12,57 @@ Config.STARTING_ATTACK_SPEED = 1
 Config.STARTING_RANGE = 48
 Config.STARTING_PICKUP_RADIUS = 10
 Config.STARTING_WALK_SPEED = 17
+Config.STATE_UPDATE_INTERVAL = 0.15
+
+Config.XP = {
+	Base = 5,
+	PerLevel = 4,
+	Exponent = 1.22,
+}
+
+Config.Combat = {
+	AttackPeriodBase = 0.78,
+	AttackPeriodMin = 0.13,
+	EnemyContactCooldown = 0.8,
+	EnemyContactMinDistance = 3.3,
+	EnemyContactDistancePadding = 2,
+}
+
+Config.Boss = {
+	PulseRadius = 29,
+	PulseTelegraphDelay = 0.82,
+	PulseInterval = 5.5,
+	PulseDamage = 22,
+}
+
+Config.Difficulty = {
+	HealthScaleDivisor = 260,
+	SpeedScaleDivisor = 900,
+	SpeedScaleCap = 1.35,
+	DamageScaleDivisor = 600,
+	DamageScaleCap = 1.5,
+}
+
+Config.Spawn = {
+	BaseRate = 1.4,
+	RatePerSecond = 0.022,
+	MaxRate = 8,
+	BruteUnlockTime = 120,
+	BruteBaseChance = 0.08,
+	BruteChancePerSecond = 1 / 2500,
+	BruteChanceCap = 0.2,
+	GhoulUnlockTime = 35,
+	GhoulBaseChance = 0.34,
+	GhoulChancePerSecond = 1 / 1000,
+	GhoulChanceCap = 0.62,
+}
+
+Config.Gems = {
+	Lifetime = 90,
+	PickupMergeDistance = 2.8,
+	MagnetBaseSpeed = 22,
+	MagnetSpeedPerStud = 5,
+}
 
 -- Asset IDs live in the sibling AssetIds ModuleScript, not inline here, so the
 -- Studio installer can preserve every uploaded ID across reinstalls. See
