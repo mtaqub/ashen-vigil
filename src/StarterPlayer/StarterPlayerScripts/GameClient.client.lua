@@ -26,12 +26,6 @@ local COLORS = {
 	purple = Color3.fromRGB(131, 83, 210),
 }
 
-local CHOICE_IMAGE_KEYS = {
-	GraveHalo = "GraveHalo",
-	Blackflame = "BlackflameTestament",
-	CinderOath = "CinderOath",
-}
-
 local function imageUri(assetId)
 	local numericId = tonumber(assetId)
 	if not numericId or numericId <= 0 then
