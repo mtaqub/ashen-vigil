@@ -847,7 +847,7 @@ local function showSkinPreview(viewport, skinId, headOnly)
 		local head = model:FindFirstChild("Head")
 		local headPosition = (head and head.Position) or Vector3.new(0, 0, 0)
 		previewCamera.FieldOfView = 40
-		previewCamera.CFrame = CFrame.new(headPosition - Vector3.new(0, 0, 1.6), headPosition)
+		previewCamera.CFrame = CFrame.new(headPosition - Vector3.new(0, 0, 2.8), headPosition)
 	else
 		local root = model.PrimaryPart or model:FindFirstChild("HumanoidRootPart")
 		local center = (root and root.Position) or Vector3.new(0, 0, 0)
