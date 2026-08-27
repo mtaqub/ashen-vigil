@@ -861,8 +861,8 @@ local function refreshRollPanelDisplay()
 	reservedLabel.Text = "Reserved: " .. (reserved and string.format("%s (%s)", reserved.name, reserved.rarityName) or "empty")
 	reservedLabel.TextColor3 = (reserved and reserved.rarityColor) or COLORS.cream
 	reservedDesc.Text = reserved and reserved.description or "Nothing banked -- a roll will replace your equipped skin."
-	showSkinPreview(equippedViewport, equipped and equipped.id, false)
-	showSkinPreview(reservedIcon, reserved and reserved.id, true)
+	showSkinPreview(equippedViewport, equipped and equipped.id)
+	showSkinPreview(reservedIcon, reserved and reserved.id)
 	rollEmbersButton.Text = string.format("Roll -- %d Embers", rollBoothState.rollCost)
 	rollRobuxButton.Text = rollBoothState.robuxEnabled and "Roll -- Robux" or "Roll -- Robux (Coming Soon)"
 end
