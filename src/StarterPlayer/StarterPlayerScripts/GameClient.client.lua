@@ -133,6 +133,130 @@ local objective = textLabel(
 	15
 )
 
+-- Quest tracker: always visible (not gated on being in the Vigil, since
+-- quest progress -- kills, level, boss defeats -- is earned there but the
+-- tracker itself is just informational). Rows are rebuilt only when the
+-- active quest set actually changes (day/week rollover), not on every
+-- state push, to avoid destroy/recreate churn.
+local questPanel = Instance.new("Frame")
+questPanel.Name = "QuestPanel"
+questPanel.Size = UDim2.fromOffset(240, 0)
+questPanel.AutomaticSize = Enum.AutomaticSize.Y
+questPanel.Position = UDim2.fromOffset(24, 24)
+questPanel.BackgroundColor3 = COLORS.ink
+questPanel.BackgroundTransparency = 0.18
+questPanel.BorderSizePixel = 0
+questPanel.Parent = gui
+corner(questPanel, 10)
+stroke(questPanel, COLORS.panelLight, 1, 0.3)
+
+local questTitle = textLabel(
+	questPanel,
+	"QuestTitle",
+	"VIGIL OATHS",
+	UDim2.new(1, -20, 0, 22),
+	UDim2.fromOffset(10, 8),
+	Vector2.zero,
+	Enum.Font.GothamBlack,
+	COLORS.gold,
+	13
+)
+questTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+local questList = Instance.new("Frame")
+questList.Name = "QuestList"
+questList.Size = UDim2.new(1, -20, 0, 0)
+questList.AutomaticSize = Enum.AutomaticSize.Y
+questList.Position = UDim2.fromOffset(10, 34)
+questList.BackgroundTransparency = 1
+questList.Parent = questPanel
+local questListLayout = Instance.new("UIListLayout")
+questListLayout.FillDirection = Enum.FillDirection.Vertical
+questListLayout.Padding = UDim.new(0, 6)
+questListLayout.Parent = questList
+local questBottomPadding = Instance.new("UIPadding")
+questBottomPadding.PaddingBottom = UDim.new(0, 12)
+questBottomPadding.Parent = questList
+
+local questRows = {}
+
+local function updateQuestPanel(daily, weekly)
+	local combined = {}
+	for _, entry in ipairs(daily or {}) do
+		table.insert(combined, entry)
+	end
+	for _, entry in ipairs(weekly or {}) do
+		table.insert(combined, entry)
+	end
+
+	local sameShape = #combined == #questRows
+	if sameShape then
+		for index, entry in ipairs(combined) do
+			if questRows[index].title ~= entry.title then
+				sameShape = false
+				break
+			end
+		end
+	end
+
+	if not sameShape then
+		for _, row in ipairs(questRows) do
+			row.frame:Destroy()
+		end
+		questRows = {}
+		for _, entry in ipairs(combined) do
+			local row = Instance.new("Frame")
+			row.Name = "QuestRow"
+			row.Size = UDim2.new(1, 0, 0, 30)
+			row.BackgroundTransparency = 1
+			row.Parent = questList
+
+			local rowLabel = textLabel(
+				row,
+				"Title",
+				entry.title,
+				UDim2.new(1, 0, 0, 16),
+				UDim2.fromOffset(0, 0),
+				Vector2.zero,
+				Enum.Font.GothamBold,
+				COLORS.cream,
+				12
+			)
+			rowLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+			local barBack = Instance.new("Frame")
+			barBack.Name = "Bar"
+			barBack.Size = UDim2.new(1, 0, 0, 8)
+			barBack.Position = UDim2.fromOffset(0, 18)
+			barBack.BackgroundColor3 = Color3.fromRGB(48, 40, 44)
+			barBack.BorderSizePixel = 0
+			barBack.ClipsDescendants = true
+			barBack.Parent = row
+			corner(barBack, 4)
+
+			local barFill = Instance.new("Frame")
+			barFill.Name = "Fill"
+			barFill.Size = UDim2.fromScale(0, 1)
+			barFill.BackgroundColor3 = COLORS.gold
+			barFill.BorderSizePixel = 0
+			barFill.Parent = barBack
+			corner(barFill, 4)
+
+			table.insert(questRows, { frame = row, title = entry.title, label = rowLabel, fill = barFill })
+		end
+	end
+
+	for index, entry in ipairs(combined) do
+		local row = questRows[index]
+		if row then
+			row.label.Text = string.format("%s  %d/%d", entry.title, entry.progress, entry.target)
+			row.label.TextColor3 = entry.complete and COLORS.gold or COLORS.cream
+			row.fill.Size = UDim2.fromScale(math.clamp(entry.progress / math.max(entry.target, 1), 0, 1), 1)
+			row.fill.BackgroundColor3 = entry.complete and COLORS.gold or COLORS.purple
+		end
+	end
+end
+
 local bossPanel = Instance.new("Frame")
 bossPanel.Name = "BossPanel"
 bossPanel.Size = UDim2.fromOffset(520, 56)
