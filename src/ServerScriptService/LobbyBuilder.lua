@@ -225,11 +225,15 @@ function LobbyBuilder.Build()
 		Color3.fromRGB(58, 52, 50),
 	}
 	local facadePositions = {
-		{ offset = Vector3.new(-40, 0, -30), angle = math.rad(20) },
-		{ offset = Vector3.new(-10, 0, -44), angle = math.rad(0) },
-		{ offset = Vector3.new(30, 0, -34), angle = math.rad(-25) },
-		{ offset = Vector3.new(42, 0, 6), angle = math.rad(-90) },
-		{ offset = Vector3.new(-42, 0, 10), angle = math.rad(90) },
+		{ offset = Vector3.new(-76, 0, -58), angle = math.rad(20) },
+		{ offset = Vector3.new(-19, 0, -84), angle = math.rad(0) },
+		{ offset = Vector3.new(57, 0, -65), angle = math.rad(-25) },
+		{ offset = Vector3.new(80, 0, 12), angle = math.rad(-90) },
+		{ offset = Vector3.new(-80, 0, 19), angle = math.rad(90) },
+		{ offset = Vector3.new(-45, 0, -80), angle = math.rad(10) },
+		{ offset = Vector3.new(45, 0, -78), angle = math.rad(-10) },
+		{ offset = Vector3.new(80, 0, -40), angle = math.rad(-70) },
+		{ offset = Vector3.new(-80, 0, -35), angle = math.rad(70) },
 	}
 	for index, info in ipairs(facadePositions) do
 		makeBuildingFacade(
