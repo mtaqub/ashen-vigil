@@ -215,6 +215,29 @@ local killsLabel = textLabel(
 	20
 )
 
+local embersPanel = Instance.new("Frame")
+embersPanel.Name = "EmbersPanel"
+embersPanel.Size = UDim2.fromOffset(154, 40)
+embersPanel.Position = UDim2.new(1, -24, 0, 80)
+embersPanel.AnchorPoint = Vector2.new(1, 0)
+embersPanel.BackgroundColor3 = COLORS.ink
+embersPanel.BackgroundTransparency = 0.18
+embersPanel.BorderSizePixel = 0
+embersPanel.Parent = gui
+corner(embersPanel, 10)
+stroke(embersPanel, Color3.fromRGB(246, 190, 77), 1, 0.3)
+local embersLabel = textLabel(
+	embersPanel,
+	"Embers",
+	"0 EMBERS",
+	UDim2.fromScale(1, 1),
+	UDim2.fromScale(0.5, 0.5),
+	Vector2.new(0.5, 0.5),
+	Enum.Font.GothamBlack,
+	COLORS.gold,
+	16
+)
+
 local relicPanel = Instance.new("Frame")
 relicPanel.Name = "RelicPanel"
 relicPanel.Size = UDim2.fromOffset(242, 104)
