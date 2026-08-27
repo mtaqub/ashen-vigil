@@ -749,13 +749,13 @@ local function shuffledUpgradeChoices(state)
 	local ids = {}
 	for id in pairs(Config.Upgrades) do
 		local available = true
-		if id == "Multishot" and state.projectiles >= 5 then
+		if id == "Multishot" and state.projectiles >= Config.Upgrades.Multishot.Effect.MaxProjectiles then
 			available = false
-		elseif id == "Speed" and state.walkSpeed >= 28 then
+		elseif id == "Speed" and state.walkSpeed >= Config.Upgrades.Speed.Effect.MaxWalkSpeed then
 			available = false
-		elseif id == "GraveHalo" and state.graveHaloRank >= 5 then
+		elseif id == "GraveHalo" and state.graveHaloRank >= Config.Upgrades.GraveHalo.Effect.MaxRank then
 			available = false
-		elseif id == "Blackflame" and state.blackflameRank >= 5 then
+		elseif id == "Blackflame" and state.blackflameRank >= Config.Upgrades.Blackflame.Effect.MaxRank then
 			available = false
 		end
 		if available then
