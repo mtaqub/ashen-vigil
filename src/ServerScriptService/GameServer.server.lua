@@ -493,14 +493,14 @@ local function spawnEnemy(forcedEnemyId)
 	-- ember, is attached by EnemyVisuals.server.lua / MobModelFactory once this
 	-- part lands in Workspace.AshenVigilArena.Enemies.
 
-	local difficulty = enemyId == "Warden" and 1 or (1 + elapsedTime / 260)
+	local difficulty = enemyId == "Warden" and 1 or (1 + elapsedTime / Config.Difficulty.HealthScaleDivisor)
 	local enemyData = {
 		id = enemyId,
 		part = part,
 		health = template.Health * difficulty,
 		maxHealth = template.Health * difficulty,
-		speed = template.Speed * math.min(1 + elapsedTime / 900, 1.35),
-		damage = template.Damage * math.min(1 + elapsedTime / 600, 1.5),
+		speed = template.Speed * math.min(1 + elapsedTime / Config.Difficulty.SpeedScaleDivisor, Config.Difficulty.SpeedScaleCap),
+		damage = template.Damage * math.min(1 + elapsedTime / Config.Difficulty.DamageScaleDivisor, Config.Difficulty.DamageScaleCap),
 		xp = template.XP,
 		lastHit = 0,
 		baseColor = template.Color,
