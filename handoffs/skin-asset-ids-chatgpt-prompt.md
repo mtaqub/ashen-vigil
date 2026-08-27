@@ -89,4 +89,3 @@ Vigil-Bound   Pants   ...
 Partial is completely fine — better to leave a skin's slot blank than guess. If you can't verify
 something live, still list it but mark it "unverified (training data)" so I know to check it
 myself before using it.
-
