@@ -74,12 +74,16 @@ function Upgrades.OfferNext(player, state)
 end
 
 function Upgrades.GainExperience(player, state, amount)
+	local levelBefore = state.level
 	state.xp += amount
 	while state.xp >= state.xpNeeded do
 		state.xp -= state.xpNeeded
 		state.level += 1
 		state.xpNeeded = GameState.xpRequired(state.level)
 		state.unclaimedLevels += 1
+	end
+	if state.level > levelBefore then
+		Quests.Progress(player, "level", state.level)
 	end
 	Upgrades.OfferNext(player, state)
 end
