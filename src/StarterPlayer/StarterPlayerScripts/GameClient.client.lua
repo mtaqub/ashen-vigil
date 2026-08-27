@@ -422,81 +422,55 @@ local announcementBody = textLabel(
 )
 announcementBody.ZIndex = 21
 
-local levelOverlay = Instance.new("Frame")
-levelOverlay.Name = "LevelOverlay"
-levelOverlay.Size = UDim2.fromScale(1, 1)
-levelOverlay.BackgroundColor3 = COLORS.ink
-levelOverlay.BackgroundTransparency = 0.24
-levelOverlay.BorderSizePixel = 0
-levelOverlay.Visible = false
-levelOverlay.ZIndex = 10
-levelOverlay.Parent = gui
-
+-- A small side panel, not a full-screen modal: enemies are no longer frozen
+-- out during a relic choice, so the player needs to keep seeing (and moving
+-- through) the arena while picking. No full-viewport dimmer at all.
 local levelPanel = Instance.new("Frame")
 levelPanel.Name = "LevelPanel"
-levelPanel.Size = UDim2.fromOffset(760, 330)
-levelPanel.Position = UDim2.fromScale(0.5, 0.5)
-levelPanel.AnchorPoint = Vector2.new(0.5, 0.5)
+levelPanel.Size = UDim2.fromOffset(300, 0)
+levelPanel.AutomaticSize = Enum.AutomaticSize.Y
+levelPanel.Position = UDim2.new(0, 22, 0.5, 0)
+levelPanel.AnchorPoint = Vector2.new(0, 0.5)
 levelPanel.BackgroundColor3 = COLORS.panel
+levelPanel.BackgroundTransparency = 0.14
 levelPanel.BorderSizePixel = 0
+levelPanel.Visible = false
 levelPanel.ZIndex = 11
-levelPanel.Parent = levelOverlay
-corner(levelPanel, 18)
-stroke(levelPanel, COLORS.gold, 2, 0.2)
+levelPanel.Parent = gui
+corner(levelPanel, 16)
+stroke(levelPanel, COLORS.gold, 2, 0.25)
 
 local levelTitle = textLabel(
 	levelPanel,
 	"Title",
 	"LEVEL UP",
-	UDim2.new(1, -40, 0, 52),
-	UDim2.new(0.5, 0, 0, 18),
+	UDim2.new(1, -28, 0, 26),
+	UDim2.new(0.5, 0, 0, 10),
 	Vector2.new(0.5, 0),
 	Enum.Font.GothamBlack,
 	COLORS.gold,
-	30
+	18
 )
 levelTitle.ZIndex = 12
-local levelSubtitle = textLabel(
-	levelPanel,
-	"Subtitle",
-	"Inherit one forsaken relic",
-	UDim2.new(1, -40, 0, 30),
-	UDim2.new(0.5, 0, 0, 66),
-	Vector2.new(0.5, 0),
-	Enum.Font.GothamMedium,
-	COLORS.muted,
-	15
-)
-levelSubtitle.ZIndex = 12
-
-local levelSigilImageId = imageUri(Config.AssetIds.Images.LevelUpSigil)
-if levelSigilImageId then
-	local levelSigil = Instance.new("ImageLabel")
-	levelSigil.Name = "LevelUpSigil"
-	levelSigil.Size = UDim2.fromOffset(116, 116)
-	levelSigil.Position = UDim2.new(0.5, 0, 0, -9)
-	levelSigil.AnchorPoint = Vector2.new(0.5, 0)
-	levelSigil.BackgroundTransparency = 1
-	levelSigil.Image = levelSigilImageId
-	levelSigil.ImageTransparency = 0.64
-	levelSigil.ScaleType = Enum.ScaleType.Fit
-	levelSigil.ZIndex = 11
-	levelSigil.Parent = levelPanel
-end
 
 local choicesFrame = Instance.new("Frame")
 choicesFrame.Name = "Choices"
-choicesFrame.Size = UDim2.new(1, -48, 0, 190)
-choicesFrame.Position = UDim2.fromOffset(24, 112)
+choicesFrame.Size = UDim2.new(1, -28, 0, 0)
+choicesFrame.AutomaticSize = Enum.AutomaticSize.Y
+choicesFrame.Position = UDim2.new(0.5, 0, 0, 42)
+choicesFrame.AnchorPoint = Vector2.new(0.5, 0)
 choicesFrame.BackgroundTransparency = 1
 choicesFrame.ZIndex = 12
 choicesFrame.Parent = levelPanel
 local choicesLayout = Instance.new("UIListLayout")
-choicesLayout.FillDirection = Enum.FillDirection.Horizontal
+choicesLayout.FillDirection = Enum.FillDirection.Vertical
 choicesLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-choicesLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-choicesLayout.Padding = UDim.new(0, 14)
+choicesLayout.VerticalAlignment = Enum.VerticalAlignment.Top
+choicesLayout.Padding = UDim.new(0, 8)
 choicesLayout.Parent = choicesFrame
+local choicesBottomPadding = Instance.new("UIPadding")
+choicesBottomPadding.PaddingBottom = UDim.new(0, 14)
+choicesBottomPadding.Parent = choicesFrame
 
 local scale = Instance.new("UIScale")
 scale.Name = "ResponsiveScale"
