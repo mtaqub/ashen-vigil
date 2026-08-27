@@ -4,6 +4,7 @@ local RunService = game:GetService("RunService")
 
 local Config = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Config"))
 local ArenaBuilder = require(script.Parent:WaitForChild("ArenaBuilder"))
+local LobbyBuilder = require(script.Parent:WaitForChild("LobbyBuilder"))
 local GameState = require(script.Parent:WaitForChild("GameState"))
 local Effects = require(script.Parent:WaitForChild("Effects"))
 local Upgrades = require(script.Parent:WaitForChild("Upgrades"))
@@ -12,6 +13,11 @@ local Enemies = require(script.Parent:WaitForChild("Enemies"))
 local Combat = require(script.Parent:WaitForChild("Combat"))
 
 Players.CharacterAutoLoads = false
+
+-- Unchanged from before the Lobby existed: where a character lands inside
+-- the Vigil arena when they enter through the gate.
+local VIGIL_SPAWN_CFRAME = CFrame.new(0, 4, 0)
+local DEATH_RESPAWN_DELAY = 2.5
 
 local function getOrCreate(className, name, parent)
 	local existing = parent:FindFirstChild(name)
@@ -28,15 +34,14 @@ local remotes = getOrCreate("Folder", "AshenVigilRemotes", ReplicatedStorage)
 local stateUpdateRemote = getOrCreate("RemoteEvent", "StateUpdate", remotes)
 local levelUpRemote = getOrCreate("RemoteEvent", "LevelUp", remotes)
 local upgradeChoiceRemote = getOrCreate("RemoteEvent", "UpgradeChoice", remotes)
-local gameEndedRemote = getOrCreate("RemoteEvent", "GameEnded", remotes)
 local announcementRemote = getOrCreate("RemoteEvent", "Announcement", remotes)
-local restartVigilRemote = getOrCreate("RemoteEvent", "RestartVigil", remotes)
 
--- World geometry, lighting, and ambience live in ArenaBuilder; gameplay
--- systems live in their own modules (GameState/Effects/Upgrades/Gems/
--- Enemies/Combat). This script wires them together and owns player
+-- World geometry, lighting, and ambience live in ArenaBuilder/LobbyBuilder;
+-- gameplay systems live in their own modules (GameState/Effects/Upgrades/
+-- Gems/Enemies/Combat). This script wires them together and owns player
 -- lifecycle, RemoteEvent handlers, and the main loop.
 local worldFolders = ArenaBuilder.Build()
+local lobby = LobbyBuilder.Build()
 Effects.Init(worldFolders.effectsFolder)
 Gems.Init(worldFolders.gemsFolder)
 Enemies.Init(worldFolders.enemiesFolder, announcementRemote)
@@ -52,7 +57,9 @@ local function addPlayer(player)
 		humanoid.MaxHealth = Config.STARTING_HEALTH
 		humanoid.Health = Config.STARTING_HEALTH
 		humanoid.WalkSpeed = state.walkSpeed
-		root.CFrame = CFrame.new(0, 4, 0)
+		-- Every character spawn/respawn lands in the safe Lobby; entering the
+		-- Vigil is a deliberate act via the gate's ProximityPrompt below.
+		root.CFrame = lobby.spawnCFrame
 
 		-- Doubles as the player's personal torch: it travels everywhere they go,
 		-- so approaching enemies stay visible no matter where in the arena a fight
@@ -75,13 +82,18 @@ local function addPlayer(player)
 		humanoid.Died:Connect(function()
 			if state.alive then
 				state.alive = false
-				gameEndedRemote:FireClient(player, false, state.kills, GameState.elapsedTime)
-			end
-		end)
-
-		task.delay(1.8, function()
-			if state.alive and player.Parent then
-				announcementRemote:FireClient(player, "THE ASHEN VIGIL", "Endure the long night. Let no oath be forgotten.", Color3.fromRGB(203, 169, 103))
+				state.inVigil = false
+				announcementRemote:FireClient(
+					player,
+					"YOU HAVE FALLEN",
+					string.format("%d kills. The town welcomes you back.", state.kills),
+					Color3.fromRGB(203, 169, 103)
+				)
+				task.delay(DEATH_RESPAWN_DELAY, function()
+					if player.Parent then
+						player:LoadCharacter()
+					end
+				end)
 			end
 		end)
 	end)
@@ -89,20 +101,36 @@ local function addPlayer(player)
 	player:LoadCharacter()
 end
 
--- Returns a dead player to a fresh vigil: stats reset to starting values, a
--- brand-new character spawned.
-local function resetPlayerForNewVigil(player)
+-- Server-side ProximityPrompt handler: no RemoteEvent needed, this fires
+-- natively on the server for a server-owned prompt. Teleports the existing
+-- character into the Vigil (no respawn/CharacterAdded refire) with a fresh
+-- run's stats.
+lobby.vigilGate.Triggered:Connect(function(player)
 	local state = GameState.playerStates[player]
-	if not state then
+	if not state or state.inVigil then
 		return
 	end
+	local character = player.Character
+	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+	local root = character and character:FindFirstChild("HumanoidRootPart")
+	if not humanoid or not root or humanoid.Health <= 0 then
+		return
+	end
+
 	GameState.applyInitialState(state)
-	player:LoadCharacter()
-end
+	state.inVigil = true
+	state.vigilEnteredAt = GameState.elapsedTime
+	humanoid.MaxHealth = Config.STARTING_HEALTH
+	humanoid.Health = Config.STARTING_HEALTH
+	humanoid.WalkSpeed = state.walkSpeed
+	root.CFrame = VIGIL_SPAWN_CFRAME
+
+	announcementRemote:FireClient(player, "THE ASHEN VIGIL", "Endure the long night. Let no oath be forgotten.", Color3.fromRGB(203, 169, 103))
+end)
 
 upgradeChoiceRemote.OnServerEvent:Connect(function(player, upgradeId)
 	local state = GameState.playerStates[player]
-	if not state or not state.pendingChoice or type(upgradeId) ~= "string" then
+	if not state or not state.alive or not state.pendingChoice or type(upgradeId) ~= "string" then
 		return
 	end
 	local isValid = false
@@ -124,22 +152,6 @@ upgradeChoiceRemote.OnServerEvent:Connect(function(player, upgradeId)
 			Upgrades.OfferNext(player, state)
 		end
 	end)
-end)
-
-restartVigilRemote.OnServerEvent:Connect(function(player)
-	local state = GameState.playerStates[player]
-	if not state or state.alive then
-		return
-	end
-	if GameState.gameEnded or not GameState.anyOtherPlayerAlive(player) then
-		GameState.resetMatch()
-		announcementRemote:FireAllClients(
-			"THE VIGIL BEGINS ANEW",
-			"A new night falls over the ashen court.",
-			Color3.fromRGB(203, 169, 103)
-		)
-	end
-	resetPlayerForNewVigil(player)
 end)
 
 Players.PlayerAdded:Connect(addPlayer)
@@ -191,8 +203,8 @@ local function pushStateUpdates()
 	for player, state in pairs(GameState.playerStates) do
 		local _, humanoid = GameState.getLivingCharacter(player)
 		stateUpdateRemote:FireClient(player, {
-			elapsed = GameState.elapsedTime,
-			duration = Config.GAME_DURATION,
+			inVigil = state.inVigil,
+			vigilElapsed = state.inVigil and (GameState.elapsedTime - state.vigilEnteredAt) or 0,
 			level = state.level,
 			xp = state.xp,
 			xpNeeded = state.xpNeeded,
@@ -213,18 +225,30 @@ local function pushStateUpdates()
 end
 
 RunService.Heartbeat:Connect(function(dt)
-	if GameState.gameEnded then
-		return
+	GameState.elapsedTime += dt
+
+	-- The Warden recurs on an interval rather than spawning once, since the
+	-- Vigil never resets. Only advance the schedule on a successful spawn,
+	-- so an empty Vigil just keeps retrying instead of silently skipping a
+	-- whole cycle.
+	if GameState.bossEnemy == nil and GameState.elapsedTime >= GameState.nextBossSpawnTime then
+		if Enemies.Spawn("Warden") then
+			GameState.nextBossSpawnTime = GameState.elapsedTime + Config.BOSS_SPAWN_TIME
+		end
 	end
 
-	GameState.elapsedTime += dt
-	if not GameState.bossSpawned and GameState.elapsedTime >= Config.BOSS_SPAWN_TIME then
-		GameState.bossSpawned = Enemies.Spawn("Warden") ~= nil
-	end
-	GameState.spawnAccumulator += dt * math.min(Config.Spawn.BaseRate + GameState.elapsedTime * Config.Spawn.RatePerSecond, Config.Spawn.MaxRate)
-	while GameState.spawnAccumulator >= 1 and GameState.enemyCount < Config.MAX_ENEMIES do
-		GameState.spawnAccumulator -= 1
-		Enemies.Spawn()
+	-- Spawn pressure only accumulates while someone is actually in the Vigil,
+	-- so an empty arena doesn't silently build up a burst that dumps on the
+	-- next person to walk in.
+	local inVigilCount = #GameState.playersInVigil()
+	if inVigilCount > 0 then
+		local baseRate = math.min(Config.Spawn.BaseRate + GameState.elapsedTime * Config.Spawn.RatePerSecond, Config.Spawn.MaxRate)
+		GameState.spawnAccumulator += dt * (baseRate + math.max(0, inVigilCount - 1) * Config.Spawn.RatePerPlayer)
+		local enemyCap = Config.MAX_ENEMIES + math.max(0, inVigilCount - 1) * Config.MAX_ENEMIES_PER_PLAYER
+		while GameState.spawnAccumulator >= 1 and GameState.enemyCount < enemyCap do
+			GameState.spawnAccumulator -= 1
+			Enemies.Spawn()
+		end
 	end
 
 	Enemies.Update(dt)
@@ -235,15 +259,5 @@ RunService.Heartbeat:Connect(function(dt)
 	if GameState.updateAccumulator >= Config.STATE_UPDATE_INTERVAL then
 		GameState.updateAccumulator = 0
 		pushStateUpdates()
-	end
-
-	if GameState.elapsedTime >= Config.GAME_DURATION then
-		GameState.gameEnded = true
-		for player, state in pairs(GameState.playerStates) do
-			if state.alive then
-				state.alive = false
-				gameEndedRemote:FireClient(player, true, state.kills, GameState.elapsedTime, GameState.bossDefeated)
-			end
-		end
 	end
 end)
