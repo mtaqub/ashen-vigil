@@ -3,6 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Config = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Config"))
 local GameState = require(script.Parent:WaitForChild("GameState"))
 local Effects = require(script.Parent:WaitForChild("Effects"))
+local Quests = require(script.Parent:WaitForChild("Quests"))
 
 -- The leveling/relic system: offering choices, applying their effects, and
 -- tracking XP. Effect magnitudes live in Config.Upgrades[id].Effect.
