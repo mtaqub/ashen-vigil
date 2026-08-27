@@ -255,6 +255,13 @@ function ArenaBuilder.Build()
 	shrineLight.Shadows = false
 	shrineLight.Parent = shrineSigil
 
+	-- Surrounding forest ring just past the boundary walls, and a distant
+	-- castle silhouette beyond that -- so the arena's edge reads as a
+	-- transition into wilderness instead of bare baseplate, and the skyline
+	-- echoes the reference key-art's gothic backdrop.
+	WorldScenery.BuildForestRing(Vector3.new(0, 0, 0), halfArena + 20, 100, 220, arena)
+	WorldScenery.BuildCastleSilhouette(Vector3.new(0, 0, -580), arena)
+
 	Lighting.ClockTime = 0
 	Lighting.Brightness = 2.9
 	Lighting.Ambient = Color3.fromRGB(80, 72, 102)
