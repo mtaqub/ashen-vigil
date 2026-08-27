@@ -248,11 +248,15 @@ function LobbyBuilder.Build()
 
 	-- Lamp posts spread through the square for even, bright local coverage.
 	local lampOffsets = {
-		Vector3.new(-18, 0, -8),
-		Vector3.new(18, 0, -8),
-		Vector3.new(-18, 0, 12),
-		Vector3.new(18, 0, 12),
-		Vector3.new(0, 0, -20),
+		Vector3.new(-34, 0, -15),
+		Vector3.new(34, 0, -15),
+		Vector3.new(-34, 0, 22),
+		Vector3.new(34, 0, 22),
+		Vector3.new(0, 0, -38),
+		Vector3.new(-34, 0, 48),
+		Vector3.new(34, 0, 48),
+		Vector3.new(0, 0, 15),
+		Vector3.new(0, 0, 55),
 	}
 	for _, offset in ipairs(lampOffsets) do
 		makeLampPost(LOBBY_CENTER + offset, lobby)
