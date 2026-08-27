@@ -877,8 +877,27 @@ local rollLocked = false
 -- roster entries at decelerating intervals, then lands on the exact result
 -- the server already picked (never decided client-side -- this is purely a
 -- reveal effect over an outcome that's already final by the time this
--- plays). Currently a uniform spin since Config.Characters odds are flat;
--- if weighted odds are ever added, weighting this cycle would be the place.
+-- plays). Weighted by Config.Rarities so the spin's intermediate flickers
+-- match the real odds (commons flash by more often than the Legendary),
+-- not just a uniform cycle.
+local function weightedPickFromRoster(roster)
+	local totalWeight = 0
+	for _, entry in ipairs(roster) do
+		local rarity = Config.Rarities[entry.rarity]
+		totalWeight += rarity and rarity.weight or 1
+	end
+	local roll = rollAnimationRandom:NextNumber() * totalWeight
+	local cumulative = 0
+	for _, entry in ipairs(roster) do
+		local rarity = Config.Rarities[entry.rarity]
+		cumulative += rarity and rarity.weight or 1
+		if roll <= cumulative then
+			return entry
+		end
+	end
+	return roster[#roster]
+end
+
 local function playRollAnimation(payload)
 	rollLocked = true
 	local roster = payload.roster or {}
@@ -887,8 +906,9 @@ local function playRollAnimation(payload)
 	task.spawn(function()
 		for _ = 1, steps do
 			if #roster > 0 then
-				local pick = roster[rollAnimationRandom:NextInteger(1, #roster)]
-				equippedLabel.Text = "Equipped: " .. pick.name
+				local pick = weightedPickFromRoster(roster)
+				equippedLabel.Text = "Equipped: " .. string.format("%s (%s)", pick.name, pick.rarityName)
+				equippedLabel.TextColor3 = pick.rarityColor
 				equippedDesc.Text = pick.description
 				showSkinPreview(equippedViewport, pick.id, false)
 			end
