@@ -130,6 +130,57 @@ local function makePlaceholderNpc(position, facingAngle, parent)
 	head.CanCollide = false
 end
 
+-- A small kiosk where the ProximityPrompt opens the roll-booth UI
+-- (GameServer.server.lua fires OpenRollBooth on Triggered). Returns the
+-- prompt so Build() can hand it back like vigilGate.
+local function makeRollBooth(position, parent)
+	local counter = makePart(
+		"RollBoothCounter",
+		Vector3.new(6, 3, 3),
+		CFrame.new(position + Vector3.new(0, 1.5, 0)),
+		Color3.fromRGB(52, 44, 40),
+		Enum.Material.WoodPlanks,
+		parent
+	)
+
+	local banner = makePart(
+		"RollBoothBanner",
+		Vector3.new(6, 2, 0.2),
+		counter.CFrame * CFrame.new(0, 2.6, -1.3),
+		Color3.fromRGB(126, 88, 44),
+		Enum.Material.Fabric,
+		parent
+	)
+	banner.CanCollide = false
+
+	local sigil = makePart(
+		"RollBoothSigil",
+		Vector3.new(1, 1, 0.15),
+		banner.CFrame * CFrame.new(0, 0, -0.18),
+		Color3.fromRGB(246, 190, 77),
+		Enum.Material.Neon,
+		parent
+	)
+	sigil.CanCollide = false
+	local sigilLight = Instance.new("PointLight")
+	sigilLight.Color = Color3.fromRGB(246, 190, 77)
+	sigilLight.Brightness = 2.2
+	sigilLight.Range = 18
+	sigilLight.Shadows = false
+	sigilLight.Parent = sigil
+
+	local prompt = Instance.new("ProximityPrompt")
+	prompt.Name = "RollBoothPrompt"
+	prompt.ActionText = "Browse"
+	prompt.ObjectText = "Vigil-Bound"
+	prompt.HoldDuration = 0.3
+	prompt.MaxActivationDistance = 10
+	prompt.RequiresLineOfSight = false
+	prompt.Parent = counter
+
+	return prompt
+end
+
 function LobbyBuilder.Build()
 	local lobby = workspace:FindFirstChild("AshenVigilLobby")
 	if lobby then
