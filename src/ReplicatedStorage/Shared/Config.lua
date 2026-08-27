@@ -1,9 +1,14 @@
 local Config = {}
 
-Config.GAME_DURATION = 300
+-- Interval (seconds) between Warden spawns in the persistent Vigil: it recurs
+-- forever rather than spawning once, since the arena itself never resets.
 Config.BOSS_SPAWN_TIME = 240
 Config.ARENA_SIZE = 440
 Config.MAX_ENEMIES = 180
+-- Extra live-enemy headroom granted per in-Vigil player beyond the first, so
+-- a fuller Vigil can sustain more concurrent enemies without diluting
+-- pressure on any one player.
+Config.MAX_ENEMIES_PER_PLAYER = 60
 -- Optional: after creating a MaterialVariant in Studio, put its exact name here.
 Config.FLOOR_MATERIAL_VARIANT = ""
 Config.STARTING_HEALTH = 100
