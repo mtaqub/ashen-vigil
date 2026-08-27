@@ -815,9 +815,10 @@ local function clearViewport(viewport)
 	end
 end
 
--- headOnly=false frames a full-body shot (equipped); headOnly=true frames a
--- tight head-only crop (reserved icon).
-local function showSkinPreview(viewport, skinId, headOnly)
+-- Same head-centered framing for both the equipped and reserved previews,
+-- so the "zoom" matches between them -- only the viewport's own pixel size
+-- differs (equipped is the bigger box, reserved the small icon).
+local function showSkinPreview(viewport, skinId)
 	clearViewport(viewport)
 	if not skinId then
 		return
@@ -840,20 +841,12 @@ local function showSkinPreview(viewport, skinId, headOnly)
 	viewport.CurrentCamera = previewCamera
 
 	-- Characters face -Z by default, so the camera needs to sit on the -Z
-	-- side (in front of the face) and look back toward +Z -- the previous
-	-- +Z offset put the camera behind the model looking at its back, which
-	-- for the tight head-only crop showed nothing recognizable at all.
-	if headOnly then
-		local head = model:FindFirstChild("Head")
-		local headPosition = (head and head.Position) or Vector3.new(0, 0, 0)
-		previewCamera.FieldOfView = 40
-		previewCamera.CFrame = CFrame.new(headPosition - Vector3.new(0, 0, 2.8), headPosition)
-	else
-		local root = model.PrimaryPart or model:FindFirstChild("HumanoidRootPart")
-		local center = (root and root.Position) or Vector3.new(0, 0, 0)
-		previewCamera.FieldOfView = 50
-		previewCamera.CFrame = CFrame.new(center + Vector3.new(0, 1.4, -5.5), center + Vector3.new(0, 0.9, 0))
-	end
+	-- side (in front of the face) and look back toward +Z -- a +Z offset
+	-- would put the camera behind the model looking at its back.
+	local head = model:FindFirstChild("Head")
+	local headPosition = (head and head.Position) or Vector3.new(0, 0, 0)
+	previewCamera.FieldOfView = 40
+	previewCamera.CFrame = CFrame.new(headPosition - Vector3.new(0, 0, 2.8), headPosition)
 end
 
 local function refreshRollPanelDisplay()
