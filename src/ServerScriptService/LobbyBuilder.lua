@@ -304,6 +304,7 @@ function LobbyBuilder.Build()
 		lobby = lobby,
 		spawnCFrame = spawnLocation.CFrame,
 		vigilGate = vigilGate,
+		rollBooth = rollBooth,
 	}
 end
 
