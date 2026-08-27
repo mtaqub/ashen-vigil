@@ -907,7 +907,7 @@ local function playRollAnimation(payload)
 				equippedLabel.Text = "Equipped: " .. string.format("%s (%s)", pick.name, pick.rarityName)
 				equippedLabel.TextColor3 = pick.rarityColor
 				equippedDesc.Text = pick.description
-				showSkinPreview(equippedViewport, pick.id, false)
+				showSkinPreview(equippedViewport, pick.id)
 			end
 			task.wait(delay)
 			delay *= 1.12
