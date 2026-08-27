@@ -623,6 +623,164 @@ local choicesBottomPadding = Instance.new("UIPadding")
 choicesBottomPadding.PaddingBottom = UDim.new(0, 14)
 choicesBottomPadding.Parent = choicesFrame
 
+-- Roll booth panel: opened by the OpenRollBooth remote when the player
+-- interacts with the Lobby kiosk. A small centered panel (not a full-screen
+-- blocker) rather than a HUD element, since it's only relevant while
+-- standing at the booth.
+local rollPanel = Instance.new("Frame")
+rollPanel.Name = "RollPanel"
+rollPanel.Size = UDim2.fromOffset(420, 400)
+rollPanel.Position = UDim2.fromScale(0.5, 0.5)
+rollPanel.AnchorPoint = Vector2.new(0.5, 0.5)
+rollPanel.BackgroundColor3 = COLORS.panel
+rollPanel.BackgroundTransparency = 0.06
+rollPanel.BorderSizePixel = 0
+rollPanel.Visible = false
+rollPanel.ZIndex = 15
+rollPanel.Parent = gui
+corner(rollPanel, 16)
+stroke(rollPanel, COLORS.gold, 2, 0.2)
+
+local rollTitle = textLabel(
+	rollPanel,
+	"Title",
+	"VIGIL-BOUND",
+	UDim2.new(1, -40, 0, 32),
+	UDim2.fromOffset(20, 14),
+	Vector2.zero,
+	Enum.Font.GothamBlack,
+	COLORS.gold,
+	22
+)
+rollTitle.ZIndex = 16
+
+local rollCloseButton = Instance.new("TextButton")
+rollCloseButton.Name = "Close"
+rollCloseButton.Size = UDim2.fromOffset(28, 28)
+rollCloseButton.Position = UDim2.new(1, -14, 0, 14)
+rollCloseButton.AnchorPoint = Vector2.new(1, 0)
+rollCloseButton.BackgroundColor3 = COLORS.panelLight
+rollCloseButton.AutoButtonColor = false
+rollCloseButton.Text = "X"
+rollCloseButton.TextColor3 = COLORS.cream
+rollCloseButton.Font = Enum.Font.GothamBold
+rollCloseButton.TextSize = 14
+rollCloseButton.ZIndex = 17
+rollCloseButton.Parent = rollPanel
+corner(rollCloseButton, 8)
+
+local equippedLabel = textLabel(
+	rollPanel, "Equipped", "Equipped: --",
+	UDim2.new(1, -40, 0, 22), UDim2.fromOffset(20, 56), Vector2.zero,
+	Enum.Font.GothamBold, COLORS.cream, 15
+)
+equippedLabel.TextXAlignment = Enum.TextXAlignment.Left
+equippedLabel.ZIndex = 16
+local equippedDesc = textLabel(
+	rollPanel, "EquippedDesc", "",
+	UDim2.new(1, -40, 0, 18), UDim2.fromOffset(20, 78), Vector2.zero,
+	Enum.Font.GothamMedium, COLORS.muted, 12
+)
+equippedDesc.TextXAlignment = Enum.TextXAlignment.Left
+equippedDesc.ZIndex = 16
+
+local reservedLabel = textLabel(
+	rollPanel, "Reserved", "Reserved: empty",
+	UDim2.new(1, -40, 0, 22), UDim2.fromOffset(20, 108), Vector2.zero,
+	Enum.Font.GothamBold, COLORS.cream, 15
+)
+reservedLabel.TextXAlignment = Enum.TextXAlignment.Left
+reservedLabel.ZIndex = 16
+local reservedDesc = textLabel(
+	rollPanel, "ReservedDesc", "",
+	UDim2.new(1, -40, 0, 18), UDim2.fromOffset(20, 130), Vector2.zero,
+	Enum.Font.GothamMedium, COLORS.muted, 12
+)
+reservedDesc.TextXAlignment = Enum.TextXAlignment.Left
+reservedDesc.ZIndex = 16
+
+local function rollActionButton(name, text, yPos)
+	local button = Instance.new("TextButton")
+	button.Name = name
+	button.Size = UDim2.new(1, -40, 0, 40)
+	button.Position = UDim2.new(0.5, 0, 0, yPos)
+	button.AnchorPoint = Vector2.new(0.5, 0)
+	button.BackgroundColor3 = COLORS.panelLight
+	button.AutoButtonColor = false
+	button.Text = text
+	button.TextColor3 = COLORS.cream
+	button.Font = Enum.Font.GothamBold
+	button.TextSize = 15
+	button.ZIndex = 16
+	button.Parent = rollPanel
+	corner(button, 10)
+	stroke(button, COLORS.purple, 1, 0.3)
+	button.MouseEnter:Connect(function()
+		TweenService:Create(button, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(83, 49, 77) }):Play()
+	end)
+	button.MouseLeave:Connect(function()
+		TweenService:Create(button, TweenInfo.new(0.12), { BackgroundColor3 = COLORS.panelLight }):Play()
+	end)
+	return button
+end
+
+local reserveButton = rollActionButton("Reserve", "Reserve Current", 162)
+local swapButton = rollActionButton("Swap", "Swap to Reserved", 208)
+local rollEmbersButton = rollActionButton("RollEmbers", "Roll", 254)
+local rollRobuxButton = rollActionButton("RollRobux", "Roll -- Robux", 300)
+
+local rollFooter = textLabel(
+	rollPanel, "Footer",
+	"Rolling replaces your equipped skin unless it's reserved first.",
+	UDim2.new(1, -40, 0, 34), UDim2.fromOffset(20, 350), Vector2.zero,
+	Enum.Font.GothamMedium, COLORS.muted, 11
+)
+rollFooter.ZIndex = 16
+
+local rollBoothState = nil
+
+local function refreshRollPanelDisplay()
+	if not rollBoothState then
+		return
+	end
+	local equipped = rollBoothState.equipped
+	local reserved = rollBoothState.reserved
+	equippedLabel.Text = "Equipped: " .. (equipped and equipped.name or "--")
+	equippedDesc.Text = equipped and equipped.description or ""
+	reservedLabel.Text = "Reserved: " .. (reserved and reserved.name or "empty")
+	reservedDesc.Text = reserved and reserved.description or "Nothing banked -- a roll will replace your equipped skin."
+	rollEmbersButton.Text = string.format("Roll -- %d Embers", rollBoothState.rollCost)
+	rollRobuxButton.Text = rollBoothState.robuxEnabled and "Roll -- Robux" or "Roll -- Robux (Coming Soon)"
+end
+
+openRollBoothRemote.OnClientEvent:Connect(function(payload)
+	rollBoothState = payload
+	refreshRollPanelDisplay()
+	rollPanel.Visible = true
+end)
+
+rollCloseButton.Activated:Connect(function()
+	rollPanel.Visible = false
+end)
+
+reserveButton.Activated:Connect(function()
+	reserveCurrentRemote:FireServer()
+end)
+
+swapButton.Activated:Connect(function()
+	swapReservedRemote:FireServer()
+end)
+
+rollEmbersButton.Activated:Connect(function()
+	rollCharacterRemote:FireServer("embers")
+end)
+
+rollRobuxButton.Activated:Connect(function()
+	if rollBoothState and rollBoothState.robuxEnabled then
+		rollCharacterRemote:FireServer("robux")
+	end
+end)
+
 local scale = Instance.new("UIScale")
 scale.Name = "ResponsiveScale"
 scale.Parent = levelPanel
