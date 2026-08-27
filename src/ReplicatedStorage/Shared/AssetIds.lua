@@ -40,4 +40,17 @@ AssetIds.Images = {
 	CinderWarden = 130595313908517,
 }
 
+-- Optional clothing/accessory ids per Config.Characters skin id. BodyColors
+-- alone already keep every skin in the game's dark palette (see Config.lua),
+-- so the game looks correct with all of these left at 0 -- fill them in once
+-- real catalog or custom-uploaded assets exist for a skin, no code changes
+-- needed elsewhere (see GameServer.server.lua's applySkinVisuals).
+AssetIds.Characters = {
+	Default = { Shirt = 0, Pants = 0, HairAccessory = 0, BackAccessory = 0 },
+	Hollowed = { Shirt = 0, Pants = 0, HairAccessory = 0, BackAccessory = 0 },
+	Cinderbound = { Shirt = 0, Pants = 0, HairAccessory = 0, BackAccessory = 0 },
+	Nightbound = { Shirt = 0, Pants = 0, HairAccessory = 0, BackAccessory = 0 },
+	Oathsworn = { Shirt = 0, Pants = 0, HairAccessory = 0, BackAccessory = 0 },
+}
+
 return AssetIds
