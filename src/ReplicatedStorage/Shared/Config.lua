@@ -92,11 +92,29 @@ Config.RobuxRollProductId = 3710061933
 -- asset ids are optional and live in AssetIds.Characters — unset (0) until
 -- real catalog/uploaded assets are sourced; BodyColors alone already keep
 -- every skin in the game's dark ashen palette.
+-- Roll odds and display color/name per rarity tier. Config.Characters
+-- entries reference these by key rather than duplicating weight/color, so
+-- there's one place to rebalance odds.
+Config.Rarities = {
+	Common = { name = "Common", color = Color3.fromRGB(180, 178, 184), weight = 40 },
+	Uncommon = { name = "Uncommon", color = Color3.fromRGB(110, 200, 120), weight = 27 },
+	Rare = { name = "Rare", color = Color3.fromRGB(90, 150, 230), weight = 18 },
+	Epic = { name = "Epic", color = Color3.fromRGB(170, 90, 220), weight = 11 },
+	Legendary = { name = "Legendary", color = Color3.fromRGB(246, 190, 77), weight = 4 },
+}
+
+-- One skin per rarity tier. Higher rarity stacks more statBoost fields
+-- (Common/Uncommon: 1, Rare/Epic: 2, Legendary: 3) rather than inventing new
+-- mechanics -- every field here is one applySkinStatBoost already applies.
+-- Visual distinctiveness beyond BodyColors comes from CharacterAccessories
+-- (procedural Part geometry welded on, same technique as MobModelFactory/
+-- RelicModelFactory -- no catalog assets needed).
 Config.Characters = {
 	{
 		id = "Default",
 		name = "Vigil-Bound",
-		description = "The oath's first shape: ash-pale skin beneath a tattered dark cloak.",
+		rarity = "Common",
+		description = "The oath's first shape: ash-pale skin beneath a tattered dark cloak. +1 movement speed.",
 		bodyColors = {
 			head = Color3.fromRGB(207, 196, 190),
 			torso = Color3.fromRGB(42, 38, 48),
@@ -111,7 +129,8 @@ Config.Characters = {
 	{
 		id = "Hollowed",
 		name = "The Hollowed",
-		description = "A vessel worn thin by the long night. +20 maximum health.",
+		rarity = "Uncommon",
+		description = "A vessel worn thin by the long night, pale as bone. +25 maximum health.",
 		bodyColors = {
 			head = Color3.fromRGB(245, 231, 209),
 			torso = Color3.fromRGB(70, 58, 90),
@@ -121,12 +140,13 @@ Config.Characters = {
 			rightLeg = Color3.fromRGB(56, 47, 72),
 		},
 		glowColor = Color3.fromRGB(226, 230, 235),
-		statBoost = { maxHealthBonus = 20 },
+		statBoost = { maxHealthBonus = 25 },
 	},
 	{
 		id = "Cinderbound",
 		name = "Cinderbound",
-		description = "Ember runs beneath the skin. +12% damage.",
+		rarity = "Rare",
+		description = "Ember runs beneath the skin, cracked with fading fire. +12% damage, +5% attack speed.",
 		bodyColors = {
 			head = Color3.fromRGB(200, 188, 182),
 			torso = Color3.fromRGB(38, 32, 50),
@@ -136,12 +156,13 @@ Config.Characters = {
 			rightLeg = Color3.fromRGB(30, 26, 40),
 		},
 		glowColor = Color3.fromRGB(221, 44, 83),
-		statBoost = { damageMultiplier = 1.12 },
+		statBoost = { damageMultiplier = 1.12, attackSpeedMultiplier = 1.05 },
 	},
 	{
 		id = "Nightbound",
 		name = "Nightbound",
-		description = "Wreathed in blackflame. +12% attack speed.",
+		rarity = "Epic",
+		description = "Wreathed in blackflame smoke, reaching further than the eye follows. +15% attack speed, +3 blood-shard pickup radius.",
 		bodyColors = {
 			head = Color3.fromRGB(196, 186, 190),
 			torso = Color3.fromRGB(38, 32, 50),
@@ -151,12 +172,13 @@ Config.Characters = {
 			rightLeg = Color3.fromRGB(30, 26, 40),
 		},
 		glowColor = Color3.fromRGB(107, 47, 139),
-		statBoost = { attackSpeedMultiplier = 1.12 },
+		statBoost = { attackSpeedMultiplier = 1.15, pickupRadiusBonus = 3 },
 	},
 	{
 		id = "Oathsworn",
 		name = "Oathsworn",
-		description = "Tarnished gold marks an old, patient oath. +4 blood-shard pickup radius.",
+		rarity = "Legendary",
+		description = "Tarnished gold marks an old, patient oath, gilded pauldron to sigil. +10% damage, +15 maximum health, +3 pickup radius.",
 		bodyColors = {
 			head = Color3.fromRGB(207, 196, 190),
 			torso = Color3.fromRGB(52, 44, 40),
@@ -166,7 +188,7 @@ Config.Characters = {
 			rightLeg = Color3.fromRGB(40, 34, 32),
 		},
 		glowColor = Color3.fromRGB(246, 190, 77),
-		statBoost = { pickupRadiusBonus = 4 },
+		statBoost = { damageMultiplier = 1.10, maxHealthBonus = 15, pickupRadiusBonus = 3 },
 	},
 }
 
