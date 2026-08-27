@@ -833,6 +833,7 @@ local function showSkinPreview(viewport, skinId, headOnly)
 		return
 	end
 	model.Parent = viewport
+	CharacterAccessories.Attach(model, skinId)
 
 	local previewCamera = Instance.new("Camera")
 	previewCamera.Parent = viewport
