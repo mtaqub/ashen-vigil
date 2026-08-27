@@ -727,38 +727,13 @@ announcementRemote.OnClientEvent:Connect(function(title, body, accentColor)
 	end)
 end)
 
-gameEndedRemote.OnClientEvent:Connect(function(won, kills, survived, wardenDefeated)
-	levelOverlay.Visible = false
-	resultOverlay.Visible = true
-	resultButton.Visible = not won
-	restartRequested = false
-	if won then
-		resultTitle.Text = wardenDefeated and "THE OATH IS SUNDERED" or "THE VIGIL ENDURES"
-		resultTitle.TextColor3 = COLORS.gold
-		resultText.Text = wardenDefeated
-			and string.format("The Cinder Warden has fallen.\n%d forsaken banished.", kills)
-			or string.format("You endured until dawn. The Warden remains.\n%d forsaken banished.", kills)
-	else
-		resultTitle.Text = "YOUR VIGIL ENDS"
-		resultTitle.TextColor3 = COLORS.red
-		resultText.Text = string.format("Endured %s  -  %d forsaken banished.", formatTime(survived), kills)
-	end
-end)
-
-resultButton.Activated:Connect(function()
-	if restartRequested then
-		return
-	end
-	restartRequested = true
-	restartVigilRemote:FireServer()
-	task.delay(2, function()
-		restartRequested = false
-	end)
-end)
-
+-- Death (and any other end-of-run event) is now just a light Announcement
+-- toast fired by the server, handled by the connection above — there's no
+-- more full-screen result modal or manual restart button, since the server
+-- auto-returns the player to the Lobby a couple seconds after dying.
 player.CharacterAdded:Connect(function()
-	resultOverlay.Visible = false
-	restartRequested = false
+	levelPanel.Visible = false
+	clearChoices()
 end)
 
 local intro = textLabel(
