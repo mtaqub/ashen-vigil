@@ -120,6 +120,27 @@ end
 -- relied on for containment); branches aren't, so they don't snag movement.
 function WorldScenery.BuildForestRing(center, innerRadius, depth, treeCount, parent, random)
 	random = random or Random.new()
+
+	-- Neither caller's own floor extends this far out (the arena/Lobby floor
+	-- stops at innerRadius, the forest ring starts there) -- without this,
+	-- every tree/scrub cluster sits over whatever pre-existing baseplate is
+	-- underneath rather than any ground this game actually built, which can
+	-- look deceptively fine under warm scene lighting until you look closely.
+	-- One big square (not a true ring) is a deliberate simplification: it's
+	-- fully hidden under the real floor in the covered area, and generous
+	-- enough past the tree ring's outer edge that a player navigating within
+	-- the (collidable) trees would never reach a corner.
+	local outerRadius = innerRadius + depth
+	local groundSize = (outerRadius + 30) * 2
+	makePart(
+		"ForestFloor",
+		Vector3.new(groundSize, 2, groundSize),
+		CFrame.new(center - Vector3.new(0, 1.1, 0)),
+		Color3.fromRGB(26, 23, 20),
+		Enum.Material.Ground,
+		parent
+	)
+
 	for _ = 1, treeCount do
 		local angle = random:NextNumber(0, math.pi * 2)
 		local radius = innerRadius + random:NextNumber(0, depth)
