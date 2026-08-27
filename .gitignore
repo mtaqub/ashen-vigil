@@ -6,3 +6,6 @@ Desktop.ini
 # Editor swap/backup files
 *.swp
 *~
+
+# Claude Code machine-local config, hooks, and logs
+.claude/
