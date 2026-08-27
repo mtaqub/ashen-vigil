@@ -128,6 +128,7 @@ function GameState.applyInitialState(state)
 	if state.inVigil == nil then
 		state.inVigil = false
 	end
+	state.vigilEnteredAt = 0
 	return state
 end
 
