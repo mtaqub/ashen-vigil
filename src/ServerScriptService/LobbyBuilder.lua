@@ -71,8 +71,14 @@ local function makeLampPost(position, parent)
 end
 
 -- Simple leaning facade suggesting an old, slightly decrepit building front.
--- Placeholder massing only — not a real building interior.
+-- Placeholder massing only — not a real building interior. Roof is a peaked
+-- gable (two angled slabs meeting at a ridge) rather than a flat cap, sits
+-- on a foundation step instead of appearing to float on the ground plane,
+-- and gets a weathering streak + nudged window placement so buildings don't
+-- all read as identical boxes -- particularly noticeable from directly
+-- above, where a flat roof cap is the only thing visible.
 local function makeBuildingFacade(position, facingAngle, width, height, color, parent)
+	local rng = Random.new()
 	local lean = math.rad(2.5)
 	local facade = makePart(
 		"BuildingFacade",
@@ -82,21 +88,43 @@ local function makeBuildingFacade(position, facingAngle, width, height, color, p
 		Enum.Material.Concrete,
 		parent
 	)
-	local roof = makePart(
-		"FacadeRoof",
-		Vector3.new(width + 0.6, 0.6, 2.6),
-		facade.CFrame * CFrame.new(0, height * 0.5 + 0.3, 0),
-		Color3.fromRGB(46, 40, 44),
+
+	local foundation = makePart(
+		"FacadeFoundation",
+		Vector3.new(width + 1.2, 0.6, 2.8),
+		facade.CFrame * CFrame.new(0, -height * 0.5 - 0.3, 0),
+		Color3.fromRGB(34, 30, 30),
 		Enum.Material.Slate,
 		parent
 	)
-	roof.CanCollide = false
+	foundation.CanCollide = false
+
+	-- Two slabs sloping down from a center ridge (classic lean-to-gable
+	-- massing) instead of one flat cap.
+	local roofPitch = math.rad(rng:NextNumber(22, 34))
+	local roofRun = width * 0.5 + 0.5
+	local roofSlabLength = roofRun / math.cos(roofPitch)
+	local ridgeCFrame = facade.CFrame * CFrame.new(0, height * 0.5, 0)
+	for _, side in ipairs({ -1, 1 }) do
+		local slab = makePart(
+			"FacadeRoofSlab",
+			Vector3.new(roofSlabLength, 0.5, 2.8),
+			ridgeCFrame
+				* CFrame.new(side * roofRun * 0.5, roofRun * 0.5 * math.tan(roofPitch), 0)
+				* CFrame.Angles(0, 0, -side * roofPitch),
+			Color3.fromRGB(40, 35, 39),
+			Enum.Material.Slate,
+			parent
+		)
+		slab.CanCollide = false
+	end
 
 	-- A single warm window glow per facade, another small local light source.
+	-- Size/height nudged per building rather than identical every time.
 	local window = makePart(
 		"FacadeWindow",
-		Vector3.new(width * 0.25, height * 0.3, 0.2),
-		facade.CFrame * CFrame.new(0, height * 0.12, -1.05),
+		Vector3.new(width * 0.25, height * rng:NextNumber(0.25, 0.35), 0.2),
+		facade.CFrame * CFrame.new(0, height * rng:NextNumber(0.05, 0.2), -1.05),
 		Color3.fromRGB(255, 196, 120),
 		Enum.Material.Neon,
 		parent
@@ -108,6 +136,20 @@ local function makeBuildingFacade(position, facingAngle, width, height, color, p
 	windowLight.Range = 16
 	windowLight.Shadows = false
 	windowLight.Parent = window
+
+	-- Cheap crack/stain suggestion so the wall isn't a flat uniform color.
+	local streak = makePart(
+		"FacadeWeathering",
+		Vector3.new(rng:NextNumber(0.15, 0.3), height * rng:NextNumber(0.5, 0.85), 0.05),
+		facade.CFrame
+			* CFrame.new(rng:NextNumber(-width * 0.35, width * 0.35), rng:NextNumber(-height * 0.1, height * 0.15), -1.03)
+			* CFrame.Angles(0, 0, math.rad(rng:NextNumber(-6, 6))),
+		Color3.fromRGB(0, 0, 0),
+		Enum.Material.Concrete,
+		parent
+	)
+	streak.CanCollide = false
+	streak.Transparency = 0.4
 end
 
 -- Placeholder NPC standee: a crude static figure marking where a real
