@@ -141,25 +141,34 @@ function WorldScenery.BuildForestRing(center, innerRadius, depth, treeCount, par
 		parent
 	)
 
-	-- Invisible collision ring right at the seam between the caller's own
-	-- floor (which ends at innerRadius) and the ForestFloor above -- a
-	-- polygon of overlapping wall segments approximating a circle, since
-	-- this project builds everything from plain Parts (no Terrain). Trunks
-	-- alone were only a "soft" barrier with real gaps between them (fine as
-	-- background dressing for the arena, which already has a real wall well
-	-- before this point -- but the Lobby had nothing else stopping a player
-	-- from wandering straight through the gaps into the empty ground beyond
-	-- the tree line). This applies uniformly to every BuildForestRing caller.
-	local segmentCount = 32
+	-- Invisible square boundary fully containing the circular tree ring --
+	-- mirrors ArenaBuilder's own wall style (4 straight segments) instead of
+	-- a polygon approximating a circle, for consistency with every other
+	-- boundary this project builds. Sized off outerRadius rather than
+	-- innerRadius: a square at innerRadius would sit exactly at the tree
+	-- ring's inner edge only along the 4 cardinal directions, cutting
+	-- diagonal trees off outside the wall while leaving cardinal ones
+	-- inside -- sizing to outerRadius (+ margin) guarantees the whole ring
+	-- stays inside the wall at every angle, at the cost of some extra
+	-- walkable empty space near the diagonals. Trunks alone were only a
+	-- "soft" barrier with real gaps between them (fine as background
+	-- dressing for the arena, which already has a real wall well before
+	-- this point -- but the Lobby had nothing else stopping a player from
+	-- wandering through the gaps into the empty ground beyond the tree
+	-- line). This applies uniformly to every BuildForestRing caller.
 	local wallHeight = 30
-	local segmentLength = (2 * math.pi * innerRadius / segmentCount) * 1.1
-	for i = 1, segmentCount do
-		local angle = (i - 1) / segmentCount * math.pi * 2
+	local halfExtent = outerRadius + 10
+	local boundarySpecs = {
+		{ size = Vector3.new(halfExtent * 2, wallHeight, 2), offset = Vector3.new(0, 0, -halfExtent) },
+		{ size = Vector3.new(halfExtent * 2, wallHeight, 2), offset = Vector3.new(0, 0, halfExtent) },
+		{ size = Vector3.new(2, wallHeight, halfExtent * 2), offset = Vector3.new(-halfExtent, 0, 0) },
+		{ size = Vector3.new(2, wallHeight, halfExtent * 2), offset = Vector3.new(halfExtent, 0, 0) },
+	}
+	for _, spec in ipairs(boundarySpecs) do
 		local boundary = makePart(
 			"ForestBoundary",
-			Vector3.new(2, wallHeight, segmentLength),
-			CFrame.new(center + Vector3.new(math.cos(angle) * innerRadius, wallHeight * 0.5, math.sin(angle) * innerRadius))
-				* CFrame.Angles(0, -angle, 0),
+			spec.size,
+			CFrame.new(center + spec.offset + Vector3.new(0, wallHeight * 0.5, 0)),
 			Color3.new(0, 0, 0),
 			Enum.Material.SmoothPlastic,
 			parent
