@@ -27,6 +27,8 @@ end
 
 local TREE_COLOR = Color3.fromRGB(20, 18, 24)
 local BRANCH_COLOR = Color3.fromRGB(16, 14, 20)
+local CROWN_COLOR = Color3.fromRGB(13, 12, 17)
+local SCRUB_COLOR = Color3.fromRGB(24, 21, 18)
 
 local function buildTree(position, random, parent)
 	local height = random:NextNumber(14, 26)
@@ -41,17 +43,70 @@ local function buildTree(position, random, parent)
 		parent
 	)
 
-	local branchCount = random:NextInteger(2, 4)
+	local branchCount = random:NextInteger(3, 6)
 	for _ = 1, branchCount do
 		local branchAngle = random:NextNumber(0, math.pi * 2)
-		local branchTilt = math.rad(random:NextNumber(35, 65))
-		local branchHeight = random:NextNumber(0.35, 0.85) * height
+		local branchTilt = math.rad(random:NextNumber(30, 70))
+		local branchHeight = random:NextNumber(0.4, 0.95) * height
 		makePart(
 			"Branch",
-			Vector3.new(0.3, random:NextNumber(3, 6), 0.3),
+			Vector3.new(0.35, random:NextNumber(3, 7), 0.35),
 			trunk.CFrame * CFrame.new(0, branchHeight - height * 0.5, 0) * CFrame.Angles(branchTilt, branchAngle, 0),
 			BRANCH_COLOR,
 			Enum.Material.Slate,
+			parent,
+			false
+		)
+	end
+
+	-- A tangled mass of short flat shards clustered at the crown, so each
+	-- tree reads as a silhouette with real volume from a distance or from
+	-- above -- previously just bare sticks with gaps of empty sky between
+	-- them. Deliberately irregular/gnarled rather than a rounded canopy, to
+	-- keep the "dead and twisted" read rather than looking like a healthy
+	-- tree.
+	local crownPosition = trunk.Position + Vector3.new(0, height * 0.42, 0)
+	local shardCount = random:NextInteger(5, 9)
+	for _ = 1, shardCount do
+		local shardAngle = random:NextNumber(0, math.pi * 2)
+		local shardTilt = math.rad(random:NextNumber(0, 80))
+		local shardOffset = random:NextNumber(0, height * 0.22)
+		makePart(
+			"CrownShard",
+			Vector3.new(random:NextNumber(1.4, 3), 0.25, random:NextNumber(1.4, 3)),
+			CFrame.new(crownPosition)
+				* CFrame.Angles(0, shardAngle, 0)
+				* CFrame.new(shardOffset, 0, 0)
+				* CFrame.Angles(shardTilt, random:NextNumber(0, math.pi * 2), 0),
+			CROWN_COLOR,
+			Enum.Material.Slate,
+			parent,
+			false
+		)
+	end
+end
+
+-- A small cluster of low, irregular dead-scrub/rubble parts -- fills the
+-- gap between open ground and the tree line so the boundary reads as a
+-- natural transition rather than flat ground meeting bare trunks with
+-- nothing between them.
+local function buildScrub(position, random, parent)
+	local clusterSize = random:NextInteger(2, 4)
+	for _ = 1, clusterSize do
+		local angle = random:NextNumber(0, math.pi * 2)
+		local reach = random:NextNumber(0, 1.6)
+		local height = random:NextNumber(0.6, 1.6)
+		makePart(
+			"DeadScrub",
+			Vector3.new(random:NextNumber(0.6, 1.4), height, random:NextNumber(0.6, 1.4)),
+			CFrame.new(position + Vector3.new(math.cos(angle) * reach, height * 0.5, math.sin(angle) * reach))
+				* CFrame.Angles(
+					math.rad(random:NextNumber(-25, 25)),
+					random:NextNumber(0, math.pi * 2),
+					math.rad(random:NextNumber(-25, 25))
+				),
+			SCRUB_COLOR,
+			Enum.Material.Rock,
 			parent,
 			false
 		)
