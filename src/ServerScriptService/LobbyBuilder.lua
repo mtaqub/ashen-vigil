@@ -179,7 +179,7 @@ function LobbyBuilder.Build()
 		makeBuildingFacade(
 			LOBBY_CENTER + info.offset,
 			info.angle,
-			random and 0 or 10, -- placeholder width, replaced below
+			10 + (index % 3) * 2,
 			14,
 			facadeColors[(index - 1) % #facadeColors + 1],
 			lobby
