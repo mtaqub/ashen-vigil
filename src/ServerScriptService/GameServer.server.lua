@@ -86,6 +86,10 @@ local function applySkinVisuals(character, humanoid, skinId)
 	description.LeftLegColor = skin.bodyColors.leftLeg
 	description.RightLegColor = skin.bodyColors.rightLeg
 
+	-- Snapshot the on-theme body colors before layering optional catalog asset
+	-- ids on top, so a bad id can fall back to just this (see pcall below).
+	local colorsOnly = description:Clone()
+
 	local assetIds = Config.AssetIds.Characters[skinId]
 	if assetIds then
 		if assetIds.Shirt and assetIds.Shirt > 0 then
@@ -105,7 +109,19 @@ local function applySkinVisuals(character, humanoid, skinId)
 		end
 	end
 
-	humanoid:ApplyDescription(description)
+	-- A bad/moderated/wrong-type id in AssetIds.Characters makes ApplyDescription
+	-- throw. Degrade to the body-color-only look (BodyColors + the procedural
+	-- CharacterAccessories geometry + glow below still read on-theme) rather than
+	-- erroring the spawn.
+	local ok, err = pcall(function()
+		humanoid:ApplyDescription(description)
+	end)
+	if not ok then
+		warn(("applySkinVisuals: ApplyDescription failed for skin %q -- check AssetIds.Characters ids (%s)"):format(tostring(skinId), tostring(err)))
+		pcall(function()
+			humanoid:ApplyDescription(colorsOnly)
+		end)
+	end
 
 	local outline = character:FindFirstChild("OathboundOutline")
 	if outline then
