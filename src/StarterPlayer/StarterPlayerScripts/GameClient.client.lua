@@ -13,6 +13,10 @@ local stateUpdateRemote = remotes:WaitForChild("StateUpdate")
 local levelUpRemote = remotes:WaitForChild("LevelUp")
 local upgradeChoiceRemote = remotes:WaitForChild("UpgradeChoice")
 local announcementRemote = remotes:WaitForChild("Announcement")
+local openRollBoothRemote = remotes:WaitForChild("OpenRollBooth")
+local rollCharacterRemote = remotes:WaitForChild("RollCharacter")
+local reserveCurrentRemote = remotes:WaitForChild("ReserveCurrent")
+local swapReservedRemote = remotes:WaitForChild("SwapReserved")
 
 local COLORS = {
 	ink = Color3.fromRGB(18, 14, 25),
