@@ -116,8 +116,10 @@ BUILDERS.Magnet = function()
 	local core = makePiece(model, "Core", "Part", Vector3.new(0.5, 0.5, 0.5), CFrame.new(0, 0, 0), COLORS.void, Enum.Material.Basalt, { shape = Enum.PartType.Ball })
 	for index = 1, 4 do
 		local angle = (index / 4) * math.pi * 2
-		local offset = Vector3.new(math.cos(angle), math.sin(angle) * 0.4, math.sin(angle)) * 1.2
-		makePiece(model, "Shard" .. index, "Part", Vector3.new(0.22, 0.22, 0.4), CFrame.new(offset):Lerp(CFrame.new(0, 0, 0), 0) * CFrame.Angles(0, -angle, 0), COLORS.cinder, Enum.Material.Neon)
+		-- Pulled partway toward the core (not out at full radius) to read as
+		-- "being drawn in" rather than just orbiting.
+		local offset = Vector3.new(math.cos(angle), math.sin(angle) * 0.4, math.sin(angle)) * 0.8
+		makePiece(model, "Shard" .. index, "Part", Vector3.new(0.22, 0.22, 0.4), CFrame.new(offset) * CFrame.Angles(0, -angle, 0), COLORS.cinder, Enum.Material.Neon)
 	end
 	model.PrimaryPart = core
 	return model
