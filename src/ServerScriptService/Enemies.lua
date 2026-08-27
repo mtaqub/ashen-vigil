@@ -55,12 +55,16 @@ local function createHealthBar(part, enemyData)
 	enemyData.healthFill = fill
 end
 
+-- Spawns near a random in-Vigil player (rather than always the one nearest
+-- to the arena center) so pressure spreads across everyone in a multiplayer
+-- Vigil instead of clustering on whoever happens to be closest to origin.
 function Enemies.Spawn(forcedEnemyId)
-	if GameState.gameEnded then
+	local targetPlayer = GameState.randomInVigilPlayer()
+	if not targetPlayer then
 		return nil
 	end
-	local targetPlayer, targetRoot = GameState.nearestLivingPlayer(Vector3.zero)
-	if not targetPlayer or not targetRoot then
+	local _, _, targetRoot = GameState.getLivingCharacter(targetPlayer)
+	if not targetRoot then
 		return nil
 	end
 
