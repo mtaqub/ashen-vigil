@@ -45,12 +45,17 @@ AssetIds.Images = {
 -- so the game looks correct with all of these left at 0 -- fill them in once
 -- real catalog or custom-uploaded assets exist for a skin, no code changes
 -- needed elsewhere (see GameServer.server.lua's applySkinVisuals).
+-- Shirt/Pants sourced 2026-08-27 (ChatGPT catalog search, independently
+-- verified against economy.roblox.com/v2/assets/<id>/details -- AssetTypeId
+-- 11/12 confirmed for every id below, all for-sale and not moderated).
+-- Face/HairAccessory/BackAccessory intentionally left unset -- no confident
+-- match found; the game reads them defensively so this is fine as-is.
 AssetIds.Characters = {
-	Default = { Shirt = 0, Pants = 0, Face = 0, HairAccessory = 0, BackAccessory = 0 },
-	Hollowed = { Shirt = 0, Pants = 0, Face = 0, HairAccessory = 0, BackAccessory = 0 },
-	Cinderbound = { Shirt = 0, Pants = 0, Face = 0, HairAccessory = 0, BackAccessory = 0 },
-	Nightbound = { Shirt = 0, Pants = 0, Face = 0, HairAccessory = 0, BackAccessory = 0 },
-	Oathsworn = { Shirt = 0, Pants = 0, Face = 0, HairAccessory = 0, BackAccessory = 0 },
+	Default = { Shirt = 5101768107, Pants = 15962675091, Face = 0, HairAccessory = 0, BackAccessory = 0 },
+	Hollowed = { Shirt = 127533745306436, Pants = 132581778104117, Face = 0, HairAccessory = 0, BackAccessory = 0 },
+	Cinderbound = { Shirt = 78824205944743, Pants = 103730476523038, Face = 0, HairAccessory = 0, BackAccessory = 0 },
+	Nightbound = { Shirt = 12865457840, Pants = 12865516849, Face = 0, HairAccessory = 0, BackAccessory = 0 },
+	Oathsworn = { Shirt = 11277693358, Pants = 11277693922, Face = 0, HairAccessory = 0, BackAccessory = 0 },
 }
 
 return AssetIds
