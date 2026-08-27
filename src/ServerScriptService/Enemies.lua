@@ -223,7 +223,7 @@ function Enemies.Update(dt)
 			enemyData.lastHit = GameState.elapsedTime
 			local _, humanoid = GameState.getLivingCharacter(targetPlayer)
 			local targetState = GameState.playerStates[targetPlayer]
-			if humanoid and targetState and not targetState.pendingChoice then
+			if humanoid and targetState then
 				humanoid:TakeDamage(enemyData.damage)
 			end
 		end
