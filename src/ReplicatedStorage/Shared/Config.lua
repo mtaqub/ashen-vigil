@@ -77,6 +77,120 @@ Config.Gems = {
 	MagnetSpeedPerStud = 5,
 }
 
+-- Embers per roll at the Lobby's roll booth. Reserving/swapping between the
+-- equipped and reserved skin is always free; only rolling costs Embers (or,
+-- once RobuxRollProductId is set to a real Developer Product id, Robux).
+Config.RollCost = 150
+Config.RobuxRollProductId = 0
+
+-- Themed characters applied via Humanoid:ApplyDescription() on spawn (see
+-- GameServer.server.lua's applySkinVisuals), replacing the player's default
+-- Roblox avatar so it never clashes with the enemy/environment palette.
+-- Each carries one small, distinct gameplay bonus (statBoost) applied on top
+-- of GameState.applyInitialState using the same fields the relic Effects
+-- system already uses, so it stacks the same way. Shirt/Pants/accessory
+-- asset ids are optional and live in AssetIds.Characters — unset (0) until
+-- real catalog/uploaded assets are sourced; BodyColors alone already keep
+-- every skin in the game's dark ashen palette.
+Config.Characters = {
+	{
+		id = "Default",
+		name = "Vigil-Bound",
+		description = "The oath's first shape: ash-pale skin beneath a tattered dark cloak.",
+		bodyColors = {
+			head = Color3.fromRGB(207, 196, 190),
+			torso = Color3.fromRGB(42, 38, 48),
+			leftArm = Color3.fromRGB(42, 38, 48),
+			rightArm = Color3.fromRGB(42, 38, 48),
+			leftLeg = Color3.fromRGB(35, 32, 40),
+			rightLeg = Color3.fromRGB(35, 32, 40),
+		},
+		glowColor = Color3.fromRGB(190, 210, 255),
+		statBoost = { walkSpeedBonus = 1 },
+	},
+	{
+		id = "Hollowed",
+		name = "The Hollowed",
+		description = "A vessel worn thin by the long night. +20 maximum health.",
+		bodyColors = {
+			head = Color3.fromRGB(245, 231, 209),
+			torso = Color3.fromRGB(70, 58, 90),
+			leftArm = Color3.fromRGB(70, 58, 90),
+			rightArm = Color3.fromRGB(70, 58, 90),
+			leftLeg = Color3.fromRGB(56, 47, 72),
+			rightLeg = Color3.fromRGB(56, 47, 72),
+		},
+		glowColor = Color3.fromRGB(226, 230, 235),
+		statBoost = { maxHealthBonus = 20 },
+	},
+	{
+		id = "Cinderbound",
+		name = "Cinderbound",
+		description = "Ember runs beneath the skin. +12% damage.",
+		bodyColors = {
+			head = Color3.fromRGB(200, 188, 182),
+			torso = Color3.fromRGB(38, 32, 50),
+			leftArm = Color3.fromRGB(38, 32, 50),
+			rightArm = Color3.fromRGB(38, 32, 50),
+			leftLeg = Color3.fromRGB(30, 26, 40),
+			rightLeg = Color3.fromRGB(30, 26, 40),
+		},
+		glowColor = Color3.fromRGB(221, 44, 83),
+		statBoost = { damageMultiplier = 1.12 },
+	},
+	{
+		id = "Nightbound",
+		name = "Nightbound",
+		description = "Wreathed in blackflame. +12% attack speed.",
+		bodyColors = {
+			head = Color3.fromRGB(196, 186, 190),
+			torso = Color3.fromRGB(38, 32, 50),
+			leftArm = Color3.fromRGB(38, 32, 50),
+			rightArm = Color3.fromRGB(38, 32, 50),
+			leftLeg = Color3.fromRGB(30, 26, 40),
+			rightLeg = Color3.fromRGB(30, 26, 40),
+		},
+		glowColor = Color3.fromRGB(107, 47, 139),
+		statBoost = { attackSpeedMultiplier = 1.12 },
+	},
+	{
+		id = "Oathsworn",
+		name = "Oathsworn",
+		description = "Tarnished gold marks an old, patient oath. +4 blood-shard pickup radius.",
+		bodyColors = {
+			head = Color3.fromRGB(207, 196, 190),
+			torso = Color3.fromRGB(52, 44, 40),
+			leftArm = Color3.fromRGB(52, 44, 40),
+			rightArm = Color3.fromRGB(52, 44, 40),
+			leftLeg = Color3.fromRGB(40, 34, 32),
+			rightLeg = Color3.fromRGB(40, 34, 32),
+		},
+		glowColor = Color3.fromRGB(246, 190, 77),
+		statBoost = { pickupRadiusBonus = 4 },
+	},
+}
+
+-- Daily/weekly quests are randomly drawn from these template pools (see
+-- Quests.lua). `kind` matches the event names Enemies.lua/Upgrades.lua/
+-- GameServer.server.lua report progress under.
+Config.Quests = {
+	DailyActiveCount = 3,
+	WeeklyActiveCount = 2,
+	Daily = {
+		{ id = "DailyKillsSmall", kind = "kills", target = 20, reward = 35, title = "Banish 20 Forsaken", description = "Slay 20 enemies in the Vigil." },
+		{ id = "DailyKills", kind = "kills", target = 40, reward = 60, title = "Banish 40 Forsaken", description = "Slay 40 enemies in the Vigil." },
+		{ id = "DailyLevel", kind = "level", target = 6, reward = 50, title = "Reach Level 6", description = "Reach level 6 in a single vigil." },
+		{ id = "DailySurvive", kind = "vigilMinutes", target = 4, reward = 45, title = "Survive 4 Minutes", description = "Endure 4 minutes in a single vigil." },
+		{ id = "DailyBoss", kind = "bossDefeats", target = 1, reward = 80, title = "Fell the Warden", description = "Defeat the Cinder Warden once." },
+	},
+	Weekly = {
+		{ id = "WeeklyKills", kind = "kills", target = 300, reward = 350, title = "Banish 300 Forsaken", description = "Slay 300 enemies this week." },
+		{ id = "WeeklyLevel", kind = "level", target = 12, reward = 300, title = "Reach Level 12", description = "Reach level 12 in a single vigil." },
+		{ id = "WeeklyBoss", kind = "bossDefeats", target = 3, reward = 400, title = "Sunder the Oath Thrice", description = "Defeat the Cinder Warden 3 times." },
+		{ id = "WeeklySurvive", kind = "vigilMinutes", target = 30, reward = 320, title = "Endure 30 Minutes", description = "Accumulate 30 minutes survived in the Vigil this week." },
+	},
+}
+
 -- Asset IDs live in the sibling AssetIds ModuleScript, not inline here, so the
 -- Studio installer can preserve every uploaded ID across reinstalls. See
 -- ReplicatedStorage/Shared/AssetIds for the editable table.
