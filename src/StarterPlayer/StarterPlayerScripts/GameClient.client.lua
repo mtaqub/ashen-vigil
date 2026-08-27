@@ -866,10 +866,45 @@ local function refreshRollPanelDisplay()
 	rollRobuxButton.Text = rollBoothState.robuxEnabled and "Roll -- Robux" or "Roll -- Robux (Coming Soon)"
 end
 
+local rollAnimationRandom = Random.new()
+local rollLocked = false
+
+-- Slot-machine-style reveal: cycles the equipped preview through random
+-- roster entries at decelerating intervals, then lands on the exact result
+-- the server already picked (never decided client-side -- this is purely a
+-- reveal effect over an outcome that's already final by the time this
+-- plays). Currently a uniform spin since Config.Characters odds are flat;
+-- if weighted odds are ever added, weighting this cycle would be the place.
+local function playRollAnimation(payload)
+	rollLocked = true
+	local roster = payload.roster or {}
+	local steps = 18
+	local delay = 0.06
+	task.spawn(function()
+		for _ = 1, steps do
+			if #roster > 0 then
+				local pick = roster[rollAnimationRandom:NextInteger(1, #roster)]
+				equippedLabel.Text = "Equipped: " .. pick.name
+				equippedDesc.Text = pick.description
+				showSkinPreview(equippedViewport, pick.id, false)
+			end
+			task.wait(delay)
+			delay *= 1.12
+		end
+		rollBoothState = payload
+		refreshRollPanelDisplay()
+		rollLocked = false
+	end)
+end
+
 openRollBoothRemote.OnClientEvent:Connect(function(payload)
-	rollBoothState = payload
-	refreshRollPanelDisplay()
 	rollPanel.Visible = true
+	if payload.rolled then
+		playRollAnimation(payload)
+	else
+		rollBoothState = payload
+		refreshRollPanelDisplay()
+	end
 end)
 
 rollCloseButton.Activated:Connect(function()
@@ -877,18 +912,30 @@ rollCloseButton.Activated:Connect(function()
 end)
 
 reserveButton.Activated:Connect(function()
+	if rollLocked then
+		return
+	end
 	reserveCurrentRemote:FireServer()
 end)
 
 swapButton.Activated:Connect(function()
+	if rollLocked then
+		return
+	end
 	swapReservedRemote:FireServer()
 end)
 
 rollEmbersButton.Activated:Connect(function()
+	if rollLocked then
+		return
+	end
 	rollCharacterRemote:FireServer("embers")
 end)
 
 rollRobuxButton.Activated:Connect(function()
+	if rollLocked then
+		return
+	end
 	if rollBoothState and rollBoothState.robuxEnabled then
 		rollCharacterRemote:FireServer("robux")
 	end
