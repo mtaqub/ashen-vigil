@@ -621,8 +621,10 @@ local function showLevelChoices(choices, level)
 end
 
 stateUpdateRemote.OnClientEvent:Connect(function(data)
-	local remaining = math.max(0, data.duration - data.elapsed)
-	timerLabel.Text = formatTime(remaining)
+	-- TimerPanel is repurposed from a match countdown into a personal "how
+	-- long have I been in this Vigil" stopwatch, since the Vigil itself never
+	-- ends anymore.
+	timerLabel.Text = formatTime(data.vigilElapsed)
 	killsLabel.Text = "BANISHED  " .. tostring(data.kills)
 	levelLabel.Text = "LEVEL " .. tostring(data.level)
 	healthText.Text = string.format("%d / %d", math.ceil(data.health), math.ceil(data.maxHealth))
@@ -636,28 +638,42 @@ stateUpdateRemote.OnClientEvent:Connect(function(data)
 	haloRelic.TextColor3 = data.graveHaloRank > 0 and COLORS.cream or COLORS.muted
 	flameRelic.Text = data.blackflameRank > 0 and ("Blackflame Testament  " .. tostring(data.blackflameRank)) or "Blackflame Testament  -"
 	flameRelic.TextColor3 = data.blackflameRank > 0 and COLORS.cream or COLORS.muted
-	bossPanel.Visible = data.bossActive == true
-	if data.bossActive then
-		bossName.Text = data.bossName or "THE CINDER WARDEN"
-		bossHealthFill.Size = UDim2.fromScale(math.clamp(data.bossHealth / math.max(data.bossMaxHealth, 1), 0, 1), 1)
-	end
 
 	if data.bossDefeated then
 		threatLabel.Text = "OATH SUNDERED"
 		threatLabel.TextColor3 = COLORS.gold
-	elseif data.bossActive and remaining > 30 then
+	elseif data.bossActive then
 		threatLabel.Text = "THE WARDEN DESCENDS"
 		threatLabel.TextColor3 = COLORS.red
-	elseif remaining <= 30 then
-		threatLabel.Text = "DAWN IS NEAR"
-		threatLabel.TextColor3 = COLORS.gold
 	elseif data.enemies >= 120 then
 		threatLabel.Text = "OVERWHELMING"
-	elseif data.elapsed >= 120 then
+		threatLabel.TextColor3 = COLORS.red
+	elseif data.vigilElapsed >= 120 then
 		threatLabel.Text = "THE HORDE RISES"
+		threatLabel.TextColor3 = COLORS.red
 	else
 		threatLabel.Text = "THE LONG NIGHT"
+		threatLabel.TextColor3 = COLORS.red
 	end
+
+	-- The Lobby is safe and has no combat state worth showing: hide the
+	-- whole combat HUD there rather than displaying a stale boss bar/kill
+	-- count/relic loadout from whatever run the player last had.
+	local combatHudVisible = data.inVigil == true
+	timerPanel.Visible = combatHudVisible
+	objective.Visible = combatHudVisible
+	killsPanel.Visible = combatHudVisible
+	relicPanel.Visible = combatHudVisible
+	statsPanel.Visible = combatHudVisible
+	xpBack.Visible = combatHudVisible
+	bossPanel.Visible = combatHudVisible and data.bossActive == true
+	if data.bossActive and combatHudVisible then
+		bossName.Text = data.bossName or "THE CINDER WARDEN"
+		bossHealthFill.Size = UDim2.fromScale(math.clamp(data.bossHealth / math.max(data.bossMaxHealth, 1), 0, 1), 1)
+	end
+	controlsHint.Text = combatHudVisible
+		and (UserInputService.TouchEnabled and "MOVE WITH THE JOYSTICK - RELICS STRIKE AUTOMATICALLY" or "WASD TO MOVE  -  RELICS STRIKE AUTOMATICALLY")
+		or (UserInputService.TouchEnabled and "FIND THE GATE TO ENTER THE VIGIL" or "WASD TO MOVE  -  FIND THE GATE TO ENTER THE VIGIL")
 
 	if data.health < previousHealth then
 		vignette.BackgroundTransparency = 0.72
