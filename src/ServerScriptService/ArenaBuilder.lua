@@ -207,9 +207,9 @@ function ArenaBuilder.Build()
 		graveMark.CanCollide = false
 	end
 
-	for index = 1, 4 do
-		local angle = (index / 4) * math.pi * 2 + math.pi * 0.25
-		local position = Vector3.new(math.cos(angle) * 145, 9, math.sin(angle) * 145)
+	for index = 1, 6 do
+		local angle = (index / 6) * math.pi * 2 + math.pi * 0.25
+		local position = Vector3.new(math.cos(angle) * 240, 9, math.sin(angle) * 240)
 		local archLeft = makePart(
 			"RuinedArch",
 			Vector3.new(5, 18, 5),
