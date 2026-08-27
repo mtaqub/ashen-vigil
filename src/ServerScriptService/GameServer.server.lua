@@ -319,14 +319,41 @@ rollCharacterRemote.OnServerEvent:Connect(function(player, method)
 	end
 end)
 
-MarketplaceService.PromptProductPurchaseFinished:Connect(function(player, productId, wasPurchased)
-	if wasPurchased and productId == Config.RobuxRollProductId then
-		local profile = PlayerData.Get(player)
-		if profile then
-			performRoll(player, profile)
-		end
+-- The only reliable way to grant a Developer Product: PromptProductPurchase
+-- above just opens the OS-level purchase UI, it does not mean payment
+-- succeeded. Roblox calls this callback once payment actually clears (and
+-- retries it later via NotProcessedYet if the player isn't in the game or
+-- their profile isn't loaded yet) -- PromptProductPurchaseFinished was the
+-- wrong tool for this and has been removed.
+MarketplaceService.ProcessReceipt = function(receiptInfo)
+	if receiptInfo.ProductId ~= Config.RobuxRollProductId then
+		-- No other Developer Products exist yet. If one is ever added,
+		-- branch on receiptInfo.ProductId here rather than replacing this.
+		return Enum.ProductPurchaseDecision.NotProcessedYet
 	end
-end)
+
+	local player = Players:GetPlayerByUserId(receiptInfo.PlayerId)
+	if not player then
+		return Enum.ProductPurchaseDecision.NotProcessedYet
+	end
+
+	local profile = PlayerData.Get(player)
+	if not profile then
+		return Enum.ProductPurchaseDecision.NotProcessedYet
+	end
+
+	-- Idempotency: Roblox can call this more than once for the same
+	-- purchase (e.g. after a NotProcessedYet retry), so track which
+	-- PurchaseIds have already been granted rather than rolling again.
+	profile.processedPurchaseIds = profile.processedPurchaseIds or {}
+	if not profile.processedPurchaseIds[receiptInfo.PurchaseId] then
+		performRoll(player, profile)
+		profile.processedPurchaseIds[receiptInfo.PurchaseId] = true
+		PlayerData.Save(player)
+	end
+
+	return Enum.ProductPurchaseDecision.PurchaseGranted
+end
 
 reserveCurrentRemote.OnServerEvent:Connect(function(player)
 	local profile = PlayerData.Get(player)
