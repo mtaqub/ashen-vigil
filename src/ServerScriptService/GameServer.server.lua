@@ -1126,7 +1126,7 @@ local function updatePlayers(dt)
 		local _, humanoid = getLivingCharacter(player)
 		if humanoid then
 			state.attackClock += dt
-			local attackPeriod = math.max(0.13, 0.78 / state.attackSpeed)
+			local attackPeriod = math.max(Config.Combat.AttackPeriodMin, Config.Combat.AttackPeriodBase / state.attackSpeed)
 			if state.attackClock >= attackPeriod then
 				state.attackClock %= attackPeriod
 				performAttack(player, state)
@@ -1134,7 +1134,8 @@ local function updatePlayers(dt)
 
 			if state.graveHaloRank > 0 then
 				state.graveHaloClock += dt
-				local haloPeriod = math.max(2.4, 5.1 - state.graveHaloRank * 0.35)
+				local haloEffect = Config.Upgrades.GraveHalo.Effect
+				local haloPeriod = math.max(haloEffect.MinPeriod, haloEffect.BasePeriod - state.graveHaloRank * haloEffect.PeriodPerRank)
 				if state.graveHaloClock >= haloPeriod then
 					state.graveHaloClock %= haloPeriod
 					performGraveHalo(player, state)
@@ -1143,7 +1144,8 @@ local function updatePlayers(dt)
 
 			if state.blackflameRank > 0 then
 				state.blackflameClock += dt
-				local flamePeriod = math.max(3.4, 7 - state.blackflameRank * 0.45)
+				local flameEffect = Config.Upgrades.Blackflame.Effect
+				local flamePeriod = math.max(flameEffect.MinPeriod, flameEffect.BasePeriod - state.blackflameRank * flameEffect.PeriodPerRank)
 				if state.blackflameClock >= flamePeriod then
 					state.blackflameClock %= flamePeriod
 					performBlackflame(player, state)
