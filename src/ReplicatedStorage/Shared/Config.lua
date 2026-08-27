@@ -40,11 +40,16 @@ Config.Boss = {
 	PulseDamage = 22,
 }
 
+-- Enemy difficulty scales off the average level of players currently in the
+-- Vigil (not elapsed time, since the arena runs forever) so a freshly
+-- respawned level-1 player isn't dropped into a fight calibrated for
+-- veterans. Same "divisor + cap" shape as before, just driven by
+-- (averageLevel - 1) instead of elapsedTime.
 Config.Difficulty = {
-	HealthScaleDivisor = 260,
-	SpeedScaleDivisor = 900,
+	HealthScaleDivisor = 15,
+	SpeedScaleDivisor = 40,
 	SpeedScaleCap = 1.35,
-	DamageScaleDivisor = 600,
+	DamageScaleDivisor = 30,
 	DamageScaleCap = 1.5,
 }
 
@@ -52,6 +57,9 @@ Config.Spawn = {
 	BaseRate = 1.4,
 	RatePerSecond = 0.022,
 	MaxRate = 8,
+	-- Additional spawn capacity (enemies/sec) per in-Vigil player beyond the
+	-- first, so pressure-per-player stays roughly constant as people join.
+	RatePerPlayer = 1,
 	BruteUnlockTime = 120,
 	BruteBaseChance = 0.08,
 	BruteChancePerSecond = 1 / 2500,
