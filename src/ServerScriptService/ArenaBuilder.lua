@@ -260,8 +260,11 @@ function ArenaBuilder.Build()
 	Lighting.Ambient = Color3.fromRGB(80, 72, 102)
 	Lighting.OutdoorAmbient = Color3.fromRGB(59, 54, 78)
 	Lighting.FogColor = Color3.fromRGB(18, 14, 28)
-	Lighting.FogStart = 150
-	Lighting.FogEnd = 380
+	-- Pushed out from the original 150/380 to match the bigger arena (wall
+	-- half-extent is now 360) -- the surrounding forest ring exists to be
+	-- seen, so fog needs to end past it rather than hiding it entirely.
+	Lighting.FogStart = 250
+	Lighting.FogEnd = 580
 
 	local atmosphere = Lighting:FindFirstChildOfClass("Atmosphere") or Instance.new("Atmosphere")
 	atmosphere.Color = Color3.fromRGB(105, 86, 138)
