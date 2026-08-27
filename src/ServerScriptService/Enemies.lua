@@ -4,6 +4,7 @@ local Config = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Co
 local GameState = require(script.Parent:WaitForChild("GameState"))
 local Effects = require(script.Parent:WaitForChild("Effects"))
 local Gems = require(script.Parent:WaitForChild("Gems"))
+local Quests = require(script.Parent:WaitForChild("Quests"))
 
 -- Enemy spawning, movement/AI, boss special attacks, and taking damage
 -- (health, death, boss-defeat, gem drop on kill).
