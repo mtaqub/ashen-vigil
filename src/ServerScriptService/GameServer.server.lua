@@ -1200,7 +1200,7 @@ RunService.Heartbeat:Connect(function(dt)
 	updatePlayers(dt)
 
 	updateAccumulator += dt
-	if updateAccumulator >= 0.15 then
+	if updateAccumulator >= Config.STATE_UPDATE_INTERVAL then
 		updateAccumulator = 0
 		pushStateUpdates()
 	end
