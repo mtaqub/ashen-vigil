@@ -3,7 +3,7 @@ local Config = {}
 -- Interval (seconds) between Warden spawns in the persistent Vigil: it recurs
 -- forever rather than spawning once, since the arena itself never resets.
 Config.BOSS_SPAWN_TIME = 240
-Config.ARENA_SIZE = 440
+Config.ARENA_SIZE = 720
 Config.MAX_ENEMIES = 180
 -- Extra live-enemy headroom granted per in-Vigil player beyond the first, so
 -- a fuller Vigil can sustain more concurrent enemies without diluting
