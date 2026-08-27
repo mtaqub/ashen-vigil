@@ -858,9 +858,11 @@ local function refreshRollPanelDisplay()
 	end
 	local equipped = rollBoothState.equipped
 	local reserved = rollBoothState.reserved
-	equippedLabel.Text = "Equipped: " .. (equipped and equipped.name or "--")
+	equippedLabel.Text = "Equipped: " .. (equipped and string.format("%s (%s)", equipped.name, equipped.rarityName) or "--")
+	equippedLabel.TextColor3 = (equipped and equipped.rarityColor) or COLORS.cream
 	equippedDesc.Text = equipped and equipped.description or ""
-	reservedLabel.Text = "Reserved: " .. (reserved and reserved.name or "empty")
+	reservedLabel.Text = "Reserved: " .. (reserved and string.format("%s (%s)", reserved.name, reserved.rarityName) or "empty")
+	reservedLabel.TextColor3 = (reserved and reserved.rarityColor) or COLORS.cream
 	reservedDesc.Text = reserved and reserved.description or "Nothing banked -- a roll will replace your equipped skin."
 	showSkinPreview(equippedViewport, equipped and equipped.id, false)
 	showSkinPreview(reservedIcon, reserved and reserved.id, true)
