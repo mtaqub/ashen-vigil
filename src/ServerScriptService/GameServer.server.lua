@@ -277,17 +277,40 @@ local function refreshRollBooth(player, profile, rolled)
 	openRollBoothRemote:FireClient(player, buildRollBoothPayload(profile, rolled))
 end
 
-local function performRoll(player, profile)
-	local pool = {}
+-- Weighted-random pick among Config.Characters, skipping excludeId (so a
+-- roll never lands on the skin already equipped -- rolling should always
+-- change something). Weight comes from each skin's rarity tier
+-- (Config.Rarities[skin.rarity].weight), not a flat chance per skin.
+local function weightedPickSkin(excludeId)
+	local candidates = {}
+	local totalWeight = 0
 	for _, skin in ipairs(Config.Characters) do
-		if skin.id ~= profile.equippedCharacter then
-			table.insert(pool, skin.id)
+		if skin.id ~= excludeId then
+			local weight = Config.Rarities[skin.rarity].weight
+			totalWeight += weight
+			table.insert(candidates, { id = skin.id, weight = weight })
 		end
 	end
-	if #pool == 0 then
+	if #candidates == 0 then
+		return nil
+	end
+	local roll = random:NextNumber() * totalWeight
+	local cumulative = 0
+	for _, candidate in ipairs(candidates) do
+		cumulative += candidate.weight
+		if roll <= cumulative then
+			return candidate.id
+		end
+	end
+	return candidates[#candidates].id
+end
+
+local function performRoll(player, profile)
+	local picked = weightedPickSkin(profile.equippedCharacter)
+	if not picked then
 		return
 	end
-	profile.equippedCharacter = pool[random:NextInteger(1, #pool)]
+	profile.equippedCharacter = picked
 
 	local character = player.Character
 	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
