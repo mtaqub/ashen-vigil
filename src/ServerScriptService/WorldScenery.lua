@@ -126,6 +126,18 @@ function WorldScenery.BuildForestRing(center, innerRadius, depth, treeCount, par
 		local position = center + Vector3.new(math.cos(angle) * radius, 0, math.sin(angle) * radius)
 		buildTree(position, random, parent)
 	end
+
+	-- Scrub clustered toward the inner edge of the ring (biased slightly
+	-- inside innerRadius through the first third of depth), scaled off
+	-- treeCount so both existing callers benefit without passing a new
+	-- parameter.
+	local scrubClusters = math.max(6, math.floor(treeCount * 0.25))
+	for _ = 1, scrubClusters do
+		local angle = random:NextNumber(0, math.pi * 2)
+		local radius = innerRadius + random:NextNumber(-6, depth * 0.35)
+		local position = center + Vector3.new(math.cos(angle) * radius, 0, math.sin(angle) * radius)
+		buildScrub(position, random, parent)
+	end
 end
 
 -- A large, simple non-collidable keep-and-spires silhouette far outside
