@@ -188,3 +188,4 @@ file, but house rule) and confirm it still `return`s the table.
   wants to **upload custom** Classic Shirt/Pants textures (ideal for theme fidelity, but costs
   Robux per upload and must be owned by the uploader/group). That's a user decision; don't act
   on it, just surface it.
+
