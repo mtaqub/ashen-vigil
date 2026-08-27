@@ -1260,5 +1260,16 @@ RunService:BindToRenderStep("AshenVigilCamera", Enum.RenderPriority.Camera.Value
 	camera.FieldOfView = 58
 	local desiredPosition = root.Position + Vector3.new(0, 55, 39)
 	local desired = CFrame.lookAt(desiredPosition, root.Position + Vector3.new(0, 0, -4))
-	camera.CFrame = camera.CFrame:Lerp(desired, 0.13)
+	-- A respawn or Vigil-gate teleport can move the character ~1400 studs in a
+	-- single frame (arena <-> Lobby are that far apart). Lerping across that
+	-- distance at the normal per-frame rate would take a very long, visible
+	-- pan across the whole map -- easy to mistake for the camera (and the
+	-- player) being stuck/lost rather than a completed respawn. Snap instead
+	-- whenever the jump is larger than ordinary movement could ever produce
+	-- in one frame.
+	if (camera.CFrame.Position - desired.Position).Magnitude > 60 then
+		camera.CFrame = desired
+	else
+		camera.CFrame = camera.CFrame:Lerp(desired, 0.13)
+	end
 end)
