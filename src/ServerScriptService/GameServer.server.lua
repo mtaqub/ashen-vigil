@@ -1101,14 +1101,14 @@ local function updateGems(dt)
 		end
 
 		if collector and collectorState and collectorRoot then
-			if nearestDistance <= 2.8 then
+			if nearestDistance <= Config.Gems.PickupMergeDistance then
 				gainExperience(collector, collectorState, gemData.amount)
 				playSpatialSound("BloodShardPickup", gem.Position, 0.42, 2)
 				gems[gem] = nil
 				gem:Destroy()
 			else
 				local direction = (collectorRoot.Position - gem.Position).Unit
-				local speed = 22 + math.max(0, collectorState.pickupRadius - nearestDistance) * 5
+				local speed = Config.Gems.MagnetBaseSpeed + math.max(0, collectorState.pickupRadius - nearestDistance) * Config.Gems.MagnetSpeedPerStud
 				gem.Position += direction * speed * dt
 			end
 		else
