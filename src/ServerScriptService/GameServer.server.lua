@@ -1003,11 +1003,12 @@ local function beginWardenPulse(enemyData)
 	if not part or not part.Parent then
 		return
 	end
+	local boss = Config.Boss
 	local center = part.Position
-	local radius = 29
+	local radius = boss.PulseRadius
 	createRuinRing(center, radius, Color3.fromRGB(207, 48, 39), 0.9)
 	playSpatialSound("WardenTelegraph", center, 0.9, 3)
-	task.delay(0.82, function()
+	task.delay(boss.PulseTelegraphDelay, function()
 		if enemyData.health <= 0 or not part.Parent then
 			return
 		end
@@ -1017,7 +1018,7 @@ local function beginWardenPulse(enemyData)
 			if state.alive and not state.pendingChoice then
 				local _, humanoid, root = getLivingCharacter(player)
 				if humanoid and root and (root.Position - center).Magnitude <= radius then
-					humanoid:TakeDamage(22)
+					humanoid:TakeDamage(boss.PulseDamage)
 				end
 			end
 		end
