@@ -1075,7 +1075,7 @@ local function updateGems(dt)
 			continue
 		end
 		gemData.age += dt
-		if gemData.age >= 90 then
+		if gemData.age >= Config.Gems.Lifetime then
 			gems[gem] = nil
 			gem:Destroy()
 			continue
