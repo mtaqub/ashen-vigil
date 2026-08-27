@@ -708,8 +708,8 @@ local function performBlackflame(player, state)
 	end
 
 	local center = targetData.part.Position
-	local radius = 9 + state.blackflameRank * 2
-	local damage = (24 + state.blackflameRank * 15) * state.damageMultiplier
+	local radius = blackflameEffect.BaseRadius + state.blackflameRank * blackflameEffect.RadiusPerRank
+	local damage = (blackflameEffect.BaseDamage + state.blackflameRank * blackflameEffect.DamagePerRank) * state.damageMultiplier
 	playSpatialSound("BlackflameTestament", center, 0.72, 3)
 	local flame = Instance.new("Part")
 	flame.Name = "BlackflameTestament"
