@@ -253,6 +253,10 @@ function LobbyBuilder.Build()
 	makePlaceholderNpc(LOBBY_CENTER + Vector3.new(-6, 0, -34), math.rad(15), lobby)
 	makePlaceholderNpc(LOBBY_CENTER + Vector3.new(7, 0, -34), math.rad(-15), lobby)
 
+	-- Roll booth, off to one side near spawn so it doesn't block the path to
+	-- the Vigil gate.
+	local rollBooth = makeRollBooth(LOBBY_CENTER + Vector3.new(-28, 0, 18), lobby)
+
 	-- Gate to the Vigil: two pillars, a lintel, and the entry prompt.
 	local gateCenter = LOBBY_CENTER + Vector3.new(0, 0, -46)
 	local pillarColor = Color3.fromRGB(50, 44, 48)
