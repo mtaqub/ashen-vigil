@@ -247,7 +247,7 @@ local function characterSummary(skinId)
 	}
 end
 
-local function buildRollBoothPayload(profile)
+local function buildRollBoothPayload(profile, rolled)
 	local roster = {}
 	for _, skin in ipairs(Config.Characters) do
 		table.insert(roster, characterSummary(skin.id))
@@ -259,11 +259,15 @@ local function buildRollBoothPayload(profile)
 		equipped = characterSummary(profile.equippedCharacter),
 		reserved = profile.reservedCharacter and characterSummary(profile.reservedCharacter) or nil,
 		roster = roster,
+		-- Tells the client this push is the *result* of a roll (vs. just
+		-- opening the booth or reserving/swapping), so it knows to play the
+		-- cycling reveal animation instead of snapping straight to it.
+		rolled = rolled or false,
 	}
 end
 
-local function refreshRollBooth(player, profile)
-	openRollBoothRemote:FireClient(player, buildRollBoothPayload(profile))
+local function refreshRollBooth(player, profile, rolled)
+	openRollBoothRemote:FireClient(player, buildRollBoothPayload(profile, rolled))
 end
 
 local function performRoll(player, profile)
@@ -285,7 +289,7 @@ local function performRoll(player, profile)
 	end
 
 	PlayerData.Save(player)
-	refreshRollBooth(player, profile)
+	refreshRollBooth(player, profile, true)
 end
 
 lobby.rollBooth.Triggered:Connect(function(player)
