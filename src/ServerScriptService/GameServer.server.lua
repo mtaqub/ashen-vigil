@@ -246,11 +246,15 @@ local function characterSummary(skinId)
 	if not skin then
 		return nil
 	end
+	local rarity = Config.Rarities[skin.rarity]
 	return {
 		id = skin.id,
 		name = skin.name,
 		description = skin.description,
 		glowColor = skin.glowColor,
+		rarity = skin.rarity,
+		rarityName = rarity and rarity.name or skin.rarity,
+		rarityColor = rarity and rarity.color or Color3.fromRGB(255, 255, 255),
 	}
 end
 
