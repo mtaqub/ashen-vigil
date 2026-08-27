@@ -8,6 +8,7 @@ local player = Players.LocalPlayer
 local camera = workspace.CurrentCamera
 local Config = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Config"))
 local RelicModelFactory = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("RelicModelFactory"))
+local CharacterAccessories = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("CharacterAccessories"))
 local remotes = ReplicatedStorage:WaitForChild("AshenVigilRemotes")
 local stateUpdateRemote = remotes:WaitForChild("StateUpdate")
 local levelUpRemote = remotes:WaitForChild("LevelUp")
