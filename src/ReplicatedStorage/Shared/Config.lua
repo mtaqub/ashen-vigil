@@ -78,10 +78,10 @@ Config.Gems = {
 }
 
 -- Embers per roll at the Lobby's roll booth. Reserving/swapping between the
--- equipped and reserved skin is always free; only rolling costs Embers (or,
--- once RobuxRollProductId is set to a real Developer Product id, Robux).
+-- equipped and reserved skin is always free; only rolling costs Embers (or
+-- Robux, via this Developer Product -- "Roll for a Vigil-Bound").
 Config.RollCost = 150
-Config.RobuxRollProductId = 0
+Config.RobuxRollProductId = 3710061933
 
 -- Themed characters applied via Humanoid:ApplyDescription() on spawn (see
 -- GameServer.server.lua's applySkinVisuals), replacing the player's default
