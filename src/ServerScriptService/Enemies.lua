@@ -177,7 +177,7 @@ local function beginWardenPulse(enemyData)
 		Effects.ShowHitEffect(center, Color3.fromRGB(221, 79, 34))
 		Effects.PlaySpatialSound("WardenImpact", center, 1, 4)
 		for player, state in pairs(GameState.playerStates) do
-			if state.alive and not state.pendingChoice then
+			if state.alive and state.inVigil then
 				local _, humanoid, root = GameState.getLivingCharacter(player)
 				if humanoid and root and (root.Position - center).Magnitude <= radius then
 					humanoid:TakeDamage(boss.PulseDamage)
