@@ -149,10 +149,12 @@ function Enemies.Damage(player, enemyData, damage)
 		if state then
 			state.kills += 1
 		end
+		Quests.Progress(player, "kills", 1)
 		Gems.Spawn(part.Position, enemyData.xp)
 		if enemyData.id == "Warden" then
 			GameState.bossDefeated = true
 			GameState.bossEnemy = nil
+			Quests.Progress(player, "bossDefeats", 1)
 			announcementRemote:FireAllClients("OATH SUNDERED", "The Warden returns to cinder.", Color3.fromRGB(235, 190, 93))
 		end
 		GameState.enemies[part] = nil
