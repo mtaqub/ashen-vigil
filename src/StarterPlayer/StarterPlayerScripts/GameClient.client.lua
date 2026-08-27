@@ -749,20 +749,106 @@ local function rollActionButton(name, text, yPos)
 	return button
 end
 
-local reserveButton = rollActionButton("Reserve", "Reserve Current", 162)
-local swapButton = rollActionButton("Swap", "Swap to Reserved", 208)
-local rollEmbersButton = rollActionButton("RollEmbers", "Roll", 254)
-local rollRobuxButton = rollActionButton("RollRobux", "Roll -- Robux", 300)
+local reserveButton = rollActionButton("Reserve", "Reserve Current", 212)
+local swapButton = rollActionButton("Swap", "Swap to Reserved", 258)
+local rollEmbersButton = rollActionButton("RollEmbers", "Roll", 304)
+local rollRobuxButton = rollActionButton("RollRobux", "Roll -- Robux", 350)
 
 local rollFooter = textLabel(
 	rollPanel, "Footer",
 	"Rolling replaces your equipped skin unless it's reserved first.",
-	UDim2.new(1, -40, 0, 34), UDim2.fromOffset(20, 350), Vector2.zero,
+	UDim2.new(1, -40, 0, 34), UDim2.fromOffset(20, 400), Vector2.zero,
 	Enum.Font.GothamMedium, COLORS.muted, 11
 )
 rollFooter.ZIndex = 16
 
 local rollBoothState = nil
+
+-- Builds the same HumanoidDescription applySkinVisuals builds server-side,
+-- from the same Config.Characters/AssetIds.Characters data (already
+-- replicated to the client via ReplicatedStorage), purely for preview.
+local function buildDescriptionForSkin(skinId)
+	local skin
+	for _, entry in ipairs(Config.Characters) do
+		if entry.id == skinId then
+			skin = entry
+			break
+		end
+	end
+	if not skin then
+		return nil
+	end
+
+	local description = Instance.new("HumanoidDescription")
+	description.HeadColor = skin.bodyColors.head
+	description.TorsoColor = skin.bodyColors.torso
+	description.LeftArmColor = skin.bodyColors.leftArm
+	description.RightArmColor = skin.bodyColors.rightArm
+	description.LeftLegColor = skin.bodyColors.leftLeg
+	description.RightLegColor = skin.bodyColors.rightLeg
+
+	local assetIds = Config.AssetIds.Characters[skinId]
+	if assetIds then
+		if assetIds.Shirt and assetIds.Shirt > 0 then
+			description.Shirt = assetIds.Shirt
+		end
+		if assetIds.Pants and assetIds.Pants > 0 then
+			description.Pants = assetIds.Pants
+		end
+		if assetIds.Face and assetIds.Face > 0 then
+			description.Face = assetIds.Face
+		end
+		if assetIds.HairAccessory and assetIds.HairAccessory > 0 then
+			description.HairAccessory = assetIds.HairAccessory
+		end
+		if assetIds.BackAccessory and assetIds.BackAccessory > 0 then
+			description.BackAccessory = assetIds.BackAccessory
+		end
+	end
+	return description
+end
+
+local function clearViewport(viewport)
+	for _, child in ipairs(viewport:GetChildren()) do
+		child:Destroy()
+	end
+end
+
+-- headOnly=false frames a full-body shot (equipped); headOnly=true frames a
+-- tight head-only crop (reserved icon).
+local function showSkinPreview(viewport, skinId, headOnly)
+	clearViewport(viewport)
+	if not skinId then
+		return
+	end
+	local description = buildDescriptionForSkin(skinId)
+	if not description then
+		return
+	end
+	local ok, model = pcall(function()
+		return Players:CreateHumanoidModelFromDescription(description, Enum.HumanoidRigType.R15)
+	end)
+	if not ok or not model then
+		return
+	end
+	model.Parent = viewport
+
+	local previewCamera = Instance.new("Camera")
+	previewCamera.Parent = viewport
+	viewport.CurrentCamera = previewCamera
+
+	if headOnly then
+		local head = model:FindFirstChild("Head")
+		local headPosition = (head and head.Position) or Vector3.new(0, 0, 0)
+		previewCamera.FieldOfView = 40
+		previewCamera.CFrame = CFrame.new(headPosition + Vector3.new(0, 0, 1.6), headPosition)
+	else
+		local root = model.PrimaryPart or model:FindFirstChild("HumanoidRootPart")
+		local center = (root and root.Position) or Vector3.new(0, 0, 0)
+		previewCamera.FieldOfView = 50
+		previewCamera.CFrame = CFrame.new(center + Vector3.new(0, 1.4, 5.5), center + Vector3.new(0, 0.9, 0))
+	end
+end
 
 local function refreshRollPanelDisplay()
 	if not rollBoothState then
@@ -774,6 +860,8 @@ local function refreshRollPanelDisplay()
 	equippedDesc.Text = equipped and equipped.description or ""
 	reservedLabel.Text = "Reserved: " .. (reserved and reserved.name or "empty")
 	reservedDesc.Text = reserved and reserved.description or "Nothing banked -- a roll will replace your equipped skin."
+	showSkinPreview(equippedViewport, equipped and equipped.id, false)
+	showSkinPreview(reservedIcon, reserved and reserved.id, true)
 	rollEmbersButton.Text = string.format("Roll -- %d Embers", rollBoothState.rollCost)
 	rollRobuxButton.Text = rollBoothState.robuxEnabled and "Roll -- Robux" or "Roll -- Robux (Coming Soon)"
 end
