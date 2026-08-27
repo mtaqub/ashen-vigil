@@ -142,9 +142,9 @@ function ArenaBuilder.Build()
 		end
 	end
 
-	for index = 1, 16 do
-		local angle = (index / 16) * math.pi * 2
-		local radius = 90
+	for index = 1, 24 do
+		local angle = (index / 24) * math.pi * 2
+		local radius = 150
 		local position = Vector3.new(math.cos(angle) * radius, 5, math.sin(angle) * radius)
 		local pillar = makePart(
 			"Runestone",
