@@ -111,6 +111,12 @@ local function applySkinVisuals(character, humanoid, skinId)
 	if outline then
 		outline.OutlineColor = skin.glowColor
 	end
+
+	-- Procedural per-skin geometry (pauldrons, ember cracks, wisps, etc.) --
+	-- see CharacterAccessories.lua. Always accompanies the base appearance,
+	-- so it lives here rather than needing every applySkinVisuals call site
+	-- to remember a second call.
+	CharacterAccessories.Attach(character, skinId)
 end
 
 -- Layers the equipped skin's small gameplay bonus onto a freshly-reset
