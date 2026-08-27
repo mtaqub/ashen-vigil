@@ -1201,6 +1201,7 @@ RunService.Heartbeat:Connect(function(dt)
 		gameEnded = true
 		for player, state in pairs(playerStates) do
 			if state.alive then
+				state.alive = false
 				gameEndedRemote:FireClient(player, true, state.kills, elapsedTime, bossDefeated)
 			end
 		end
