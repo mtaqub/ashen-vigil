@@ -936,6 +936,8 @@ stateUpdateRemote.OnClientEvent:Connect(function(data)
 	timerLabel.Text = formatTime(data.vigilElapsed)
 	killsLabel.Text = "BANISHED  " .. tostring(data.kills)
 	levelLabel.Text = "LEVEL " .. tostring(data.level)
+	embersLabel.Text = tostring(data.embers or 0) .. " EMBERS"
+	updateQuestPanel(data.questsDaily, data.questsWeekly)
 	healthText.Text = string.format("%d / %d", math.ceil(data.health), math.ceil(data.maxHealth))
 	healthFill.Size = UDim2.fromScale(math.clamp(data.health / math.max(data.maxHealth, 1), 0, 1), 1)
 	xpFill.Size = UDim2.fromScale(math.clamp(data.xp / math.max(data.xpNeeded, 1), 0, 1), 1)
