@@ -510,7 +510,6 @@ updateScale()
 
 local previousHealth = 100
 local choiceLocked = false
-local restartRequested = false
 
 local function formatTime(seconds)
 	seconds = math.max(0, math.floor(seconds))
