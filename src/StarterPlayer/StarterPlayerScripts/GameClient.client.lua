@@ -484,13 +484,45 @@ updateScale()
 
 local previousHealth = 100
 local choiceLocked = false
+-- Currently-displayed relic icon models + a single shared animation
+-- connection, so the "slight animation to liven it up" never leaks a loop
+-- between choice screens: it starts when choices are shown and is
+-- disconnected the moment they're cleared (picked, or panel closed on death).
+local activeRelicModels = {}
+local relicSpinConnection = nil
+local relicSpinTime = 0
 
 local function formatTime(seconds)
 	seconds = math.max(0, math.floor(seconds))
 	return string.format("%02d:%02d", math.floor(seconds / 60), seconds % 60)
 end
 
+local function stopRelicSpin()
+	if relicSpinConnection then
+		relicSpinConnection:Disconnect()
+		relicSpinConnection = nil
+	end
+	activeRelicModels = {}
+end
+
+local function startRelicSpin()
+	if relicSpinConnection then
+		return
+	end
+	relicSpinTime = 0
+	relicSpinConnection = RunService.RenderStepped:Connect(function(dt)
+		relicSpinTime += dt
+		for _, entry in ipairs(activeRelicModels) do
+			if entry.model.Parent then
+				local bob = math.sin(relicSpinTime * 2 + entry.phase) * 0.08
+				entry.model:PivotTo(CFrame.new(0, bob, 0) * CFrame.Angles(0, relicSpinTime * 1.1 + entry.phase, 0))
+			end
+		end
+	end)
+end
+
 local function clearChoices()
+	stopRelicSpin()
 	for _, child in ipairs(choicesFrame:GetChildren()) do
 		if child:IsA("TextButton") then
 			child:Destroy()
@@ -502,67 +534,66 @@ local function showLevelChoices(choices, level)
 	choiceLocked = false
 	clearChoices()
 	levelTitle.Text = "LEVEL " .. tostring(level)
-	levelOverlay.Visible = true
-	levelPanel.Size = UDim2.fromOffset(700, 300)
-	TweenService:Create(levelPanel, TweenInfo.new(0.24, Enum.EasingStyle.Back), {
-		Size = UDim2.fromOffset(760, 330),
-	}):Play()
+	levelPanel.Visible = true
 
 	for index, choice in ipairs(choices) do
-		local imageKey = CHOICE_IMAGE_KEYS[choice.id]
-		local iconImage = imageKey and imageUri(Config.AssetIds.Images[imageKey]) or nil
 		local button = Instance.new("TextButton")
 		button.Name = choice.id
-		button.Size = UDim2.fromOffset(218, 176)
+		button.Size = UDim2.new(1, 0, 0, 82)
 		button.BackgroundColor3 = index == 1 and Color3.fromRGB(70, 42, 66) or COLORS.panelLight
 		button.AutoButtonColor = false
-		button.Text = iconImage and "" or (choice.title .. "\n\n" .. choice.description)
-		button.TextColor3 = COLORS.cream
-		button.TextSize = 17
-		button.TextWrapped = true
-		button.Font = Enum.Font.GothamBold
+		button.Text = ""
 		button.ZIndex = 13
 		button.Parent = choicesFrame
-		corner(button, 14)
+		corner(button, 12)
 		local buttonStroke = stroke(button, index == 1 and COLORS.gold or COLORS.purple, 2, 0.2)
 
-		if iconImage then
-			local icon = Instance.new("ImageLabel")
-			icon.Name = "RelicIcon"
-			icon.Size = UDim2.fromOffset(66, 66)
-			icon.Position = UDim2.new(0.5, 0, 0, 8)
-			icon.AnchorPoint = Vector2.new(0.5, 0)
-			icon.BackgroundTransparency = 1
-			icon.Image = iconImage
-			icon.ScaleType = Enum.ScaleType.Fit
-			icon.ZIndex = 14
-			icon.Parent = button
+		-- Generated 3D model instead of a 2D icon, matching the enemy-visual
+		-- technique/palette. Rendered live in a ViewportFrame; the shared
+		-- RenderStepped loop above spins/bobs it slightly for "liveliness".
+		local viewport = Instance.new("ViewportFrame")
+		viewport.Name = "RelicViewport"
+		viewport.Size = UDim2.fromOffset(64, 64)
+		viewport.Position = UDim2.fromOffset(9, 9)
+		viewport.BackgroundColor3 = COLORS.ink
+		viewport.BackgroundTransparency = 0.3
+		viewport.ZIndex = 14
+		viewport.Parent = button
+		corner(viewport, 10)
 
-			local iconTitle = textLabel(
-				button,
-				"RelicName",
-				choice.title,
-				UDim2.new(1, -16, 0, 28),
-				UDim2.fromOffset(8, 77),
-				Vector2.zero,
-				Enum.Font.GothamBold,
-				COLORS.cream,
-				15
-			)
-			iconTitle.ZIndex = 14
-			local iconDescription = textLabel(
-				button,
-				"RelicDescription",
-				choice.description,
-				UDim2.new(1, -18, 0, 58),
-				UDim2.fromOffset(9, 107),
-				Vector2.zero,
-				Enum.Font.GothamMedium,
-				COLORS.muted,
-				12
-			)
-			iconDescription.ZIndex = 14
-		end
+		local relicModel = RelicModelFactory.Build(choice.id)
+		relicModel.Parent = viewport
+		local viewCamera = Instance.new("Camera")
+		viewCamera.FieldOfView = 50
+		viewCamera.CFrame = CFrame.new(Vector3.new(2.1, 1.7, 2.1), Vector3.new(0, 0, 0))
+		viewCamera.Parent = viewport
+		viewport.CurrentCamera = viewCamera
+		table.insert(activeRelicModels, { model = relicModel, phase = math.random() * math.pi * 2 })
+
+		local iconTitle = textLabel(
+			button,
+			"RelicName",
+			choice.title,
+			UDim2.new(1, -92, 0, 22),
+			UDim2.fromOffset(84, 9),
+			Vector2.zero,
+			Enum.Font.GothamBold,
+			COLORS.cream,
+			15
+		)
+		iconTitle.ZIndex = 14
+		local iconDescription = textLabel(
+			button,
+			"RelicDescription",
+			choice.description,
+			UDim2.new(1, -92, 0, 48),
+			UDim2.fromOffset(84, 31),
+			Vector2.zero,
+			Enum.Font.GothamMedium,
+			COLORS.muted,
+			12
+		)
+		iconDescription.ZIndex = 14
 
 		button.MouseEnter:Connect(function()
 			TweenService:Create(button, TweenInfo.new(0.12), {
@@ -582,9 +613,11 @@ local function showLevelChoices(choices, level)
 			end
 			choiceLocked = true
 			upgradeChoiceRemote:FireServer(choice.id)
-			levelOverlay.Visible = false
+			levelPanel.Visible = false
 		end)
 	end
+
+	startRelicSpin()
 end
 
 stateUpdateRemote.OnClientEvent:Connect(function(data)
