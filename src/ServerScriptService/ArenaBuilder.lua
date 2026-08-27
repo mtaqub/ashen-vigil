@@ -193,9 +193,9 @@ function ArenaBuilder.Build()
 		brazierLight.Parent = brazierFlame
 	end
 
-	for index = 1, 24 do
-		local angle = (index / 24) * math.pi * 2
-		local position = Vector3.new(math.cos(angle) * 24, 0.18, math.sin(angle) * 24)
+	for index = 1, 40 do
+		local angle = (index / 40) * math.pi * 2
+		local position = Vector3.new(math.cos(angle) * 40, 0.18, math.sin(angle) * 40)
 		local graveMark = makePart(
 			"GraveMark",
 			Vector3.new(4.6, 0.35, 1.1),
