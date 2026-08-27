@@ -15,6 +15,10 @@ local function defaultProfile()
 		embers = 0,
 		equippedCharacter = "Default",
 		reservedCharacter = nil,
+		-- PurchaseIds already granted by MarketplaceService.ProcessReceipt,
+		-- so a retried receipt (or the same one delivered twice) never
+		-- grants a roll more than once.
+		processedPurchaseIds = {},
 		quests = {
 			dailyResetDay = "",
 			weeklyResetWeek = "",
