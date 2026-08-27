@@ -4,6 +4,7 @@ local RunService = game:GetService("RunService")
 local MarketplaceService = game:GetService("MarketplaceService")
 
 local Config = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Config"))
+local CharacterAccessories = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("CharacterAccessories"))
 local ArenaBuilder = require(script.Parent:WaitForChild("ArenaBuilder"))
 local LobbyBuilder = require(script.Parent:WaitForChild("LobbyBuilder"))
 local GameState = require(script.Parent:WaitForChild("GameState"))
