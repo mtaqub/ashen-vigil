@@ -691,8 +691,9 @@ local function performBlackflame(player, state)
 		return
 	end
 
+	local blackflameEffect = Config.Upgrades.Blackflame.Effect
 	local targetData = nil
-	local nearestDistance = 85
+	local nearestDistance = blackflameEffect.TargetSearchRange
 	for part, enemyData in pairs(enemies) do
 		if part.Parent and enemyData.health > 0 then
 			local distance = (part.Position - root.Position).Magnitude
