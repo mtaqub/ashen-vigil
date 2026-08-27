@@ -361,7 +361,8 @@ local function getLivingCharacter(player)
 end
 
 local function xpRequired(level)
-	return math.floor(5 + (level - 1) * 4 + ((level - 1) ^ 1.22))
+	local xp = Config.XP
+	return math.floor(xp.Base + (level - 1) * xp.PerLevel + ((level - 1) ^ xp.Exponent))
 end
 
 -- Resets a player's authoritative run stats back to fresh starting values in
