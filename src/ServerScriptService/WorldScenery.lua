@@ -141,6 +141,32 @@ function WorldScenery.BuildForestRing(center, innerRadius, depth, treeCount, par
 		parent
 	)
 
+	-- Invisible collision ring right at the seam between the caller's own
+	-- floor (which ends at innerRadius) and the ForestFloor above -- a
+	-- polygon of overlapping wall segments approximating a circle, since
+	-- this project builds everything from plain Parts (no Terrain). Trunks
+	-- alone were only a "soft" barrier with real gaps between them (fine as
+	-- background dressing for the arena, which already has a real wall well
+	-- before this point -- but the Lobby had nothing else stopping a player
+	-- from wandering straight through the gaps into the empty ground beyond
+	-- the tree line). This applies uniformly to every BuildForestRing caller.
+	local segmentCount = 32
+	local wallHeight = 30
+	local segmentLength = (2 * math.pi * innerRadius / segmentCount) * 1.1
+	for i = 1, segmentCount do
+		local angle = (i - 1) / segmentCount * math.pi * 2
+		local boundary = makePart(
+			"ForestBoundary",
+			Vector3.new(2, wallHeight, segmentLength),
+			CFrame.new(center + Vector3.new(math.cos(angle) * innerRadius, wallHeight * 0.5, math.sin(angle) * innerRadius))
+				* CFrame.Angles(0, -angle, 0),
+			Color3.new(0, 0, 0),
+			Enum.Material.SmoothPlastic,
+			parent
+		)
+		boundary.Transparency = 1
+	end
+
 	for _ = 1, treeCount do
 		local angle = random:NextNumber(0, math.pi * 2)
 		local radius = innerRadius + random:NextNumber(0, depth)
