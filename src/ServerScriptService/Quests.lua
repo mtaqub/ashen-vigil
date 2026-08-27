@@ -85,6 +85,9 @@ local function progressSet(player, profile, activeSet, pool, kind, amount)
 					entry.progress = template.target
 					entry.complete = true
 					profile.embers += template.reward
+					-- Quest completion is infrequent and worth protecting
+					-- immediately, unlike per-frame progress ticks.
+					PlayerData.Save(player)
 					if announcementRemote then
 						announcementRemote:FireClient(
 							player,
