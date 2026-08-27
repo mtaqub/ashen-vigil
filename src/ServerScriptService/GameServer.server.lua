@@ -1189,7 +1189,7 @@ RunService.Heartbeat:Connect(function(dt)
 	if not bossSpawned and elapsedTime >= Config.BOSS_SPAWN_TIME then
 		bossSpawned = spawnEnemy("Warden") ~= nil
 	end
-	spawnAccumulator += dt * math.min(1.4 + elapsedTime * 0.022, 8)
+	spawnAccumulator += dt * math.min(Config.Spawn.BaseRate + elapsedTime * Config.Spawn.RatePerSecond, Config.Spawn.MaxRate)
 	while spawnAccumulator >= 1 and enemyCount < Config.MAX_ENEMIES do
 		spawnAccumulator -= 1
 		spawnEnemy()
