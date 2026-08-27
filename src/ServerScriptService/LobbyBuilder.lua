@@ -12,8 +12,13 @@
 -- Vigil" is achieved the same way the Vigil's own torches/braziers already
 -- locally brighten a dim shared ambient: strong local PointLights.
 
-local LOBBY_CENTER = Vector3.new(700, 0, 0)
-local LOBBY_SIZE = 100
+-- Moved further out (was 700) now that both the Vigil and Lobby are bigger
+-- and each has its own surrounding forest ring -- keeps a comfortable
+-- buffer so the two rings can't visually collide.
+local LOBBY_CENTER = Vector3.new(1400, 0, 0)
+local LOBBY_SIZE = 200
+
+local WorldScenery = require(script.Parent:WaitForChild("WorldScenery"))
 
 local LobbyBuilder = {}
 
