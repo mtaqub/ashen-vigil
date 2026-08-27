@@ -7,13 +7,12 @@ local UserInputService = game:GetService("UserInputService")
 local player = Players.LocalPlayer
 local camera = workspace.CurrentCamera
 local Config = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Config"))
+local RelicModelFactory = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("RelicModelFactory"))
 local remotes = ReplicatedStorage:WaitForChild("AshenVigilRemotes")
 local stateUpdateRemote = remotes:WaitForChild("StateUpdate")
 local levelUpRemote = remotes:WaitForChild("LevelUp")
 local upgradeChoiceRemote = remotes:WaitForChild("UpgradeChoice")
-local gameEndedRemote = remotes:WaitForChild("GameEnded")
 local announcementRemote = remotes:WaitForChild("Announcement")
-local restartVigilRemote = remotes:WaitForChild("RestartVigil")
 
 local COLORS = {
 	ink = Color3.fromRGB(18, 14, 25),
