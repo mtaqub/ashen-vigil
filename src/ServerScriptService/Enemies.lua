@@ -125,6 +125,7 @@ function Enemies.Spawn(forcedEnemyId)
 	createHealthBar(part, enemyData)
 	if enemyId == "Warden" then
 		GameState.bossEnemy = enemyData
+		GameState.bossDefeated = false
 		announcementRemote:FireAllClients("THE CINDER WARDEN", "An ancient oath stirs beneath the ash.", Color3.fromRGB(214, 143, 62))
 	end
 	return enemyData
