@@ -439,11 +439,12 @@ local function nearestLivingPlayer(position)
 end
 
 local function chooseEnemyType()
+	local spawn = Config.Spawn
 	local roll = random:NextNumber()
-	if elapsedTime >= 120 and roll < math.min(0.08 + elapsedTime / 2500, 0.2) then
+	if elapsedTime >= spawn.BruteUnlockTime and roll < math.min(spawn.BruteBaseChance + elapsedTime * spawn.BruteChancePerSecond, spawn.BruteChanceCap) then
 		return "Brute"
 	end
-	if elapsedTime >= 35 and roll < math.min(0.34 + elapsedTime / 1000, 0.62) then
+	if elapsedTime >= spawn.GhoulUnlockTime and roll < math.min(spawn.GhoulBaseChance + elapsedTime * spawn.GhoulChancePerSecond, spawn.GhoulChanceCap) then
 		return "Ghoul"
 	end
 	return "Bat"
