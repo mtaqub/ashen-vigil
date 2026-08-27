@@ -102,14 +102,18 @@ function Enemies.Spawn(forcedEnemyId)
 	-- ember, is attached by EnemyVisuals.server.lua / MobModelFactory once this
 	-- part lands in Workspace.AshenVigilArena.Enemies.
 
-	local difficulty = enemyId == "Warden" and 1 or (1 + GameState.elapsedTime / Config.Difficulty.HealthScaleDivisor)
+	-- Difficulty tracks the average level of players currently in the Vigil
+	-- (not elapsed time, which never resets) so a freshly-respawned level-1
+	-- player isn't dropped into a fight calibrated for veterans.
+	local averageLevel = GameState.averageInVigilLevel()
+	local difficulty = enemyId == "Warden" and 1 or (1 + (averageLevel - 1) / Config.Difficulty.HealthScaleDivisor)
 	local enemyData = {
 		id = enemyId,
 		part = part,
 		health = template.Health * difficulty,
 		maxHealth = template.Health * difficulty,
-		speed = template.Speed * math.min(1 + GameState.elapsedTime / Config.Difficulty.SpeedScaleDivisor, Config.Difficulty.SpeedScaleCap),
-		damage = template.Damage * math.min(1 + GameState.elapsedTime / Config.Difficulty.DamageScaleDivisor, Config.Difficulty.DamageScaleCap),
+		speed = template.Speed * math.min(1 + (averageLevel - 1) / Config.Difficulty.SpeedScaleDivisor, Config.Difficulty.SpeedScaleCap),
+		damage = template.Damage * math.min(1 + (averageLevel - 1) / Config.Difficulty.DamageScaleDivisor, Config.Difficulty.DamageScaleCap),
 		xp = template.XP,
 		lastHit = 0,
 		baseColor = template.Color,
