@@ -46,11 +46,11 @@ AssetIds.Images = {
 -- real catalog or custom-uploaded assets exist for a skin, no code changes
 -- needed elsewhere (see GameServer.server.lua's applySkinVisuals).
 AssetIds.Characters = {
-	Default = { Shirt = 0, Pants = 0, HairAccessory = 0, BackAccessory = 0 },
-	Hollowed = { Shirt = 0, Pants = 0, HairAccessory = 0, BackAccessory = 0 },
-	Cinderbound = { Shirt = 0, Pants = 0, HairAccessory = 0, BackAccessory = 0 },
-	Nightbound = { Shirt = 0, Pants = 0, HairAccessory = 0, BackAccessory = 0 },
-	Oathsworn = { Shirt = 0, Pants = 0, HairAccessory = 0, BackAccessory = 0 },
+	Default = { Shirt = 0, Pants = 0, Face = 0, HairAccessory = 0, BackAccessory = 0 },
+	Hollowed = { Shirt = 0, Pants = 0, Face = 0, HairAccessory = 0, BackAccessory = 0 },
+	Cinderbound = { Shirt = 0, Pants = 0, Face = 0, HairAccessory = 0, BackAccessory = 0 },
+	Nightbound = { Shirt = 0, Pants = 0, Face = 0, HairAccessory = 0, BackAccessory = 0 },
+	Oathsworn = { Shirt = 0, Pants = 0, Face = 0, HairAccessory = 0, BackAccessory = 0 },
 }
 
 return AssetIds
