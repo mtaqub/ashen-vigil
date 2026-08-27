@@ -668,8 +668,9 @@ local function performGraveHalo(player, state)
 	if not root then
 		return
 	end
-	local radius = 17 + state.graveHaloRank * 3
-	local damage = (18 + state.graveHaloRank * 12) * state.damageMultiplier
+	local effect = Config.Upgrades.GraveHalo.Effect
+	local radius = effect.BaseRadius + state.graveHaloRank * effect.RadiusPerRank
+	local damage = (effect.BaseDamage + state.graveHaloRank * effect.DamagePerRank) * state.damageMultiplier
 	createRuinRing(root.Position, radius, Color3.fromRGB(181, 146, 92), 0.42)
 	playSpatialSound("GraveHalo", root.Position, 0.7, 3)
 
