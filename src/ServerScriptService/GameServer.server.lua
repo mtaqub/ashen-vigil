@@ -598,6 +598,14 @@ RunService.Heartbeat:Connect(function(dt)
 			Quests.Progress(player, "vigilMinutes", GameState.updateAccumulator / 60)
 		end
 		GameState.updateAccumulator = 0
+		-- A UTC day/week can roll over mid-session. Checking only on join
+		-- would strand anyone online at the boundary on the previous day's
+		-- quests -- still earning progress toward a set that no longer counts
+		-- -- until they happened to rejoin. Cheap enough to re-check at the
+		-- state-push cadence: two string compares per player unless it fires.
+		for player in pairs(GameState.playerStates) do
+			Quests.EnsureCurrentSet(player)
+		end
 		pushStateUpdates()
 	end
 end)
