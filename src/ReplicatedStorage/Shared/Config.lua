@@ -202,7 +202,7 @@ Config.Quests = {
 		{ id = "DailyKillsSmall", kind = "kills", target = 20, reward = 35, title = "Banish 20 Forsaken", description = "Slay 20 enemies in the Vigil." },
 		{ id = "DailyKills", kind = "kills", target = 40, reward = 60, title = "Banish 40 Forsaken", description = "Slay 40 enemies in the Vigil." },
 		{ id = "DailyLevel", kind = "level", target = 6, reward = 50, title = "Reach Level 6", description = "Reach level 6 in a single vigil." },
-		{ id = "DailySurvive", kind = "vigilMinutes", target = 4, reward = 45, title = "Survive 4 Minutes", description = "Endure 4 minutes in a single vigil." },
+		{ id = "DailySurvive", kind = "vigilMinutes", target = 4, reward = 45, title = "Survive 4 Minutes", description = "Spend 4 minutes in the Vigil today." },
 		{ id = "DailyBoss", kind = "bossDefeats", target = 1, reward = 80, title = "Fell the Warden", description = "Defeat the Cinder Warden once." },
 	},
 	Weekly = {
